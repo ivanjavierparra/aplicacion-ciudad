@@ -21,6 +21,8 @@ class CreateAspectosTable extends Migration
             $table->float('longitud', 11, 3);
             $table->unsignedInteger('categoria_id');
             $table->foreign('categoria_id')->references('id')->on('categorias');
+            $table->unsignedInteger('denunciante_id');
+            $table->foreign('denunciante_id')->references('id')->on('denunciantes');
             $table->timestamps();
         });
     }
