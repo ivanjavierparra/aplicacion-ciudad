@@ -45,7 +45,7 @@
                 --------------------------------------
                 
                     https://pepsized.com/customize-your-google-map-markers/
-                    https://www.sitepoint.com/google-maps-made-easy-with-gmaps-js/
+                     https://www.sitepoint.com/google-maps-made-easy-with-gmaps-js/
                 */
 
 
