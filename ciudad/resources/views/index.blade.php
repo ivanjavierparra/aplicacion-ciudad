@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="static/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
         <!--<link rel="stylesheet" href="static/css/estilos.css">-->
         <style type="text/css">
             #map {
@@ -40,6 +40,15 @@
         <script src="js/bootstrap.min.js"></script>
         <script src="js/app.js"></script>
         <script>
+
+                /*   LEEEME     ---> LINKS COPADOS    
+                --------------------------------------
+                
+                    https://pepsized.com/customize-your-google-map-markers/
+                    https://www.sitepoint.com/google-maps-made-easy-with-gmaps-js/
+                */
+
+
             var map;
             function ver_mapa(){
                 map = new GMaps({
