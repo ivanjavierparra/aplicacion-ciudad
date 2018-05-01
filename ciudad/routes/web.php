@@ -21,9 +21,10 @@ Route::get('/', function () {
 });*/
 
 
-Route::get('/', function () {
-    return view('prueba');
-});
+Route::get('/', 'CategoriaController@obtenerCategorias' );
+
+
+
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
