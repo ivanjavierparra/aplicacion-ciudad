@@ -22,7 +22,7 @@ Route::get('/', function () {
 
 
 Route::get('/', 'CategoriaController@obtenerCategorias' );
-
+Route::get('/aspectos','CategoriaController@probando')->name('mapas');//voy a /aspectos cuando presiono 'Ver Aspectos' en base.blade
 
 
 

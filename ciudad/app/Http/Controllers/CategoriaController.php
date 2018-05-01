@@ -91,4 +91,11 @@ class CategoriaController extends Controller
         return view('prueba',['categorias'=>$categorias]);
     }
 
+    public function probando()
+    {
+        //$c = new Categoria();
+        $categorias = Categoria::getAllCategorias(); //aca deberia obtener los Aspectos y NO las categorias
+        return view('gmaps',['categorias'=>$categorias]);
+    }
+
 }

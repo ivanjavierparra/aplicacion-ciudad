@@ -1,28 +1,18 @@
-<!doctype html>
-<html lang="es">
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <!--<link rel="stylesheet" href="static/css/estilos.css">-->
-        <style type="text/css">
-            #map {
-              width: 400px;
-              height: 400px;
-            }
-          </style>
-        <title>Fixture Rusia 2018</title>
-    </head>
-    <body>
-        <div id="titulo" >
-            <h1 style="color: black"><center>Municipalidad de Trelew</center></h1>
-            <h2 style="color: black"><center>mapita</center></h2>
+@extends('layouts.base')
+
+
+@section('content')
+        <div id="titulo_principal">
+            <h1 class="my-4" style="text-align:center;">Aplicación para el ciudadano</h1> 
         </div>
-        <div id="map">
-            
-            
+        <div id="titulo_secundario">
+            <h2 class="my-4" style="text-align:center;">Mapa de Aspectos</h2> 
+        </div>
+        <div class="row justify-content-center">
+            <div id="map">
+                
+                
+            </div>
         </div>
         <div id="boton">
             <button onclick="ver_mapa()"> Ver Mapa </button>
@@ -37,15 +27,7 @@
 		
        
         
-        <!-- Optional JavaScript -->
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-       <!-- <script src="http://maps.google.com/maps/api/js"></script>-->
-        <script src="js/googlemapsapi.js"></script>
-        <script src="js/gmaps.js"></script>
-        <script src="js/jquery-3.3.1.min.js"></script>
-        <script src="js/popper.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/app.js"></script>
+        
         <script>
 
                 /*   LEEEME     ---> LINKS COPADOS    
@@ -159,5 +141,4 @@ google.maps.event.addListener(map, "click", function (event) {
 
            
         </script>
-    </body>
-</html> 
+ @endsection
