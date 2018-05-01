@@ -21,11 +21,18 @@
             <h2 style="color: black"><center>mapita</center></h2>
         </div>
         <div id="map">
+            
+            
+        </div>
+        <div id="boton">
             <button onclick="ver_mapa()"> Ver Mapa </button>
             
         </div>
         <div>
                 <button onclick="localizame()"> Geolocalizame </button>
+        </div>
+        <div>
+                <button onclick="agregarMarkers()"> Mostrar todos los Aspectos </button>
         </div>
 		
        
@@ -85,7 +92,7 @@
                     success: function(position) {
                         map.setCenter(position.coords.latitude, position.coords.longitude);
                        
-                            
+                                            
                         map.addMarker({
                                 lat: position.coords.latitude,
                                 lng: position.coords.longitude,
@@ -101,7 +108,6 @@
                                 }
                         });
                         //
-                        
                     },
                     error: function(error) {
                         alert('Geolocation failed: '+error.message);
@@ -114,6 +120,29 @@
                     }
                 });
             }
+
+
+            function agregarMarkers(){
+                var locations = [-43.273564102381144,-65.29729677304687,-43.27218925427647,-65.29485059842528,-43.27637619494724,-65.29158903226318 ];
+                @for ($i = 0; $i < 6; $i+=2)    
+                        
+                        map.addMarker({
+                                lat: locations[{{$i}}],
+                                lng: locations[{{$i+1}}],
+                                title: 'Ubicacion Actual',
+                                icon: 'img/1.png',
+                                infoWindow: {
+                                    content: '<p>HTML Content</p>'
+                                },
+                                click: function(e) {
+                                    
+                                    
+                                }
+                        });
+                        //
+                        @endfor
+            }
+
 
 /*map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: -34.397, lng: 150.644},
