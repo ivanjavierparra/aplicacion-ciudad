@@ -9,8 +9,8 @@
         <title>Aplicación Ciudad</title>
 
         <!-- Bootstrap core CSS -->
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/estilos.css">
+        <link rel="stylesheet" href={{ asset("css/bootstrap.min.css") }}>
+        <link rel="stylesheet" href={{ asset("css/estilos.css") }}>>
     </head>
 
     <body>
@@ -19,7 +19,7 @@
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
                 <div class="container">
                     <a class="navbar-brand" href="#">
-                        <img src="img/trelew.png" alt="Smiley face" height="42" width="42"><!---->
+                        <img src={{ asset("img/trelew.png") }} alt="Smiley face" height="42" width="42"><!---->
                         Aplicación Ciudad
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,12 +64,12 @@
         </footer>
 
         <!-- Bootstrap core JavaScript -->
-        <script src="js/googlemapsapi.js"></script>
-        <script src="js/gmaps.js"></script>
-        <script src="js/jquery-3.3.1.min.js"></script>
-        <script src="js/popper.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/app.js"></script>
+        <script src={{ asset("js/googlemapsapi.js") }}></script>
+        <script src={{ asset("js/gmaps.js") }}></script>
+        <script src={{ asset("js/jquery-3.3.1.min.js") }}></script>
+        <script src={{ asset("js/popper.min.js") }}></script>
+        <script src={{ asset("js/bootstrap.min.js") }}></script>
+        <script src={{ asset("js/app.js") }}></script>
         <script>
             $(document).ready(function() {
                 $(".dropdown-toggle").dropdown();

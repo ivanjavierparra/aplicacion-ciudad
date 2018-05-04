@@ -25,6 +25,13 @@ Route::get('/', function () {
     return view('prueba');
 });
 
+Route::get('evento/crear', 'EventoController@create');
+Route::post('evento/crear', 'EventoController@store');
+
+Route::get('estadoobjeto/crear', 'EstadoObjetoController@create');
+Route::post('estadoobjeto/crear', 'EstadoObjetoController@store');
+
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 });
+

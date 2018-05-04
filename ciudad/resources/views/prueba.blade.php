@@ -15,9 +15,9 @@
         @for ($i = 0; $i < 5; $i++)
             <div id="estadio_objeto_{{$i}}" class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
                 <div class="card h-100">
-                    <a href="#"><img class="card-img-top" src="img/car.png" alt=""></a>
+                    <a href={{ URL::to("evento/crear") }}><img class="card-img-top" src="img/car.png" alt=""></a>
                     <p class="card-title">
-                        <a href="#" style="color:black;font-weight: bold;"><center>Accidente de Tránsito</center></a>
+                        <a href={{ URL::to("evento/crear") }}style="color:black;font-weight: bold;"><center>Accidente de Tránsito</center></a>
                     </p>
                 </div>
             </div>
