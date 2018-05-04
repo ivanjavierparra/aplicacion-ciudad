@@ -11,6 +11,7 @@ class Categoria extends Model
     }
 
     public static function getCategoria($id){
-        return Categoria::where("id",$id)->first();
+        //return Categoria::where("id",$id)->first();
+        return Categoria::find($id);
     }
 }

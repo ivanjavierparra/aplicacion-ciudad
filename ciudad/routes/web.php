@@ -21,7 +21,7 @@ Route::get('/', function () {
 });*/
 
 
-Route::get('/', 'CategoriaController@obtenerCategorias' );
+Route::get('/', 'CategoriaController@obtenerCategorias' )->name('inicio');
 Route::get('/aspectos','CategoriaController@probando')->name('mapas');//voy a /aspectos cuando presiono 'Ver Aspectos' en base.blade
 Route::get('/ajax', 'CategoriaController@dameAjax' );
 
