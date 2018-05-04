@@ -21,9 +21,10 @@ Route::get('/', function () {
 });*/
 
 
-Route::get('/', function () {
-    return view('prueba');
-});
+Route::get('/', 'CategoriaController@obtenerCategorias' );
+Route::get('/aspectos','CategoriaController@probando')->name('mapas');//voy a /aspectos cuando presiono 'Ver Aspectos' en base.blade
+Route::get('/ajax', 'CategoriaController@dameAjax' );
+
 
 Route::get('evento/crear', 'EventoController@create');
 Route::post('evento/crear', 'EventoController@store');
