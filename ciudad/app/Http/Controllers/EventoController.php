@@ -22,10 +22,11 @@ class EventoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
         $evento = new Evento;
-        return view('eventos.evento-add', ['evento' => $evento ]);
+        //aca busco categoria por id y se la paso.
+        return view('eventos.evento-add', ['evento' => $evento, "id" => $id ]);
     }
 
     /**

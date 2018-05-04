@@ -15,9 +15,9 @@
         @for ($i = 0; $i < 2; $i++)  <!-- Leeme: aca iria i<5 harcodeado pq en modelo Categoria deberia ir que tipo es. -->
             <div id="estadio_objeto_{{$i}}" class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
                 <div class="card h-100">
-                    <a href={{ URL::to("evento/crear") }}><img class="card-img-top" src="{{$categorias[$i]->icono}}" alt=""></a>
+                    <a href={{ URL("evento/crear/{$categorias[$i]->id}") }}><img class="card-img-top" src="{{$categorias[$i]->icono}}" alt=""></a>
                     <p class="card-title">
-                        <a href={{ URL::to("evento/crear") }} style="color:black;font-weight: bold;"><center>{{$categorias[$i]->nombre}}</center></a>
+                        <a href={{ URL("evento/crear/{$categorias[$i]->id}") }} style="color:black;font-weight: bold;"><center>{{$categorias[$i]->nombre}}</center></a>
                     </p>
                 </div>
             </div>
@@ -32,9 +32,9 @@
         @for ($i = 2; $i < 4; $i++)
             <div id="evento_{{$i}}" class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
                 <div class="card h-100">
-                    <a href="#"><img class="card-img-top" src="{{$categorias[$i]->icono}}" alt=""></a>
+                    <a href={{ URL("estadoobjeto/crear/{$categorias[$i]->id}") }}><img class="card-img-top" src="{{$categorias[$i]->icono}}" alt=""></a>
                     <p class="card-title">
-                        <a href="#" style="color:black;font-weight: bold;"><center>{{$categorias[$i]->nombre}}</center></a>
+                        <a href={{ URL("estadoobjeto/crear/{$categorias[$i]->id}") }} style="color:black;font-weight: bold;"><center>{{$categorias[$i]->nombre}}</center></a>
                     </p>
                 </div>
             </div>
