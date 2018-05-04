@@ -26,7 +26,7 @@ Route::get('/aspectos','CategoriaController@probando')->name('mapas');//voy a /a
 Route::get('/ajax', 'CategoriaController@dameAjax' );
 
 
-Route::get('evento/crear', 'EventoController@create');
+Route::get('evento/crear/{id?}', 'EventoController@create');
 Route::post('evento/crear', 'EventoController@store');
 
 Route::get('estadoobjeto/crear', 'EstadoObjetoController@create');

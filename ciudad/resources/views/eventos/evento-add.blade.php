@@ -14,4 +14,7 @@
         <button class="btn btn-success" type="submit">Subir un Evento!</button>
     {{ Form::close() }}
     </div>
+    <div>
+        <h1>{{$categoria}}</h1>
+    </div>
 @endsection

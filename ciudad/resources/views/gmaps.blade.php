@@ -75,7 +75,7 @@
                 */
                 
                        
-    /*   var map;
+   /*    var map;
            function ver_mapa(){
                 map = new GMaps({
                     el: '#map',
