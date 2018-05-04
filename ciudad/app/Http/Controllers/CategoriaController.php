@@ -98,4 +98,11 @@ class CategoriaController extends Controller
         return view('gmaps',['categorias'=>$categorias]);
     }
 
+    public function dameAjax(){
+        $categorias = Categoria::getAllCategorias(); //aca deberia obtener los Aspectos y NO las categorias
+        return response()->json(
+             $categorias
+        );
+    }
+
 }

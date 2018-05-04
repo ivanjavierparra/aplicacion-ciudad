@@ -23,7 +23,7 @@ Route::get('/', function () {
 
 Route::get('/', 'CategoriaController@obtenerCategorias' );
 Route::get('/aspectos','CategoriaController@probando')->name('mapas');//voy a /aspectos cuando presiono 'Ver Aspectos' en base.blade
-
+Route::get('/ajax', 'CategoriaController@dameAjax' );
 
 
 Route::group(['prefix' => 'admin'], function () {

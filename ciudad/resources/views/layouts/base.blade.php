@@ -62,13 +62,19 @@
             </div>
             <!-- /.container -->
         </footer>
-
         <!-- Bootstrap core JavaScript -->
-        <script src="js/googlemapsapi.js"></script>
-        <script src="js/gmaps.js"></script>
+        <!--<script src="http://maps.googleapis.com/"></script>-->
+        <!--<script src="js/googlemapsapi.js"></script>   -->
+        <!--  LEEEEME     https://developers.google.com/maps/documentation/javascript/tutorial#Loading_the_Maps_API    -->
         <script src="js/jquery-3.3.1.min.js"></script>
         <script src="js/popper.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKOnjjR1g8kJjqPEPXN9LjxolFsQS9900"></script>
+        <script async defer src="js/gmaps.js" onload="ver_mapa()"></script>
+        <script src="js/mapa.js"></script>
+        
+        
+        
         <script src="js/app.js"></script>
         <script>
             $(document).ready(function() {

@@ -8,13 +8,57 @@
         <div id="titulo_secundario">
             <h2 class="my-4" style="text-align:center;">Mapa de Aspectos</h2> 
         </div>
+ 
         <div class="row justify-content-center">
-            <div id="map">
-                
-                
+
+            <div id="map" style="border:groove;" >
+
             </div>
+           <!-- <div class="col">
+                <div id="map" style="border:groove;" >
+                    
+                    
+                </div>
+            </div>
+           <div class="col">
+                <div class="table-responsive" style="border:groove;">
+                    <table class="table">
+                                        
+                            <thead class="thead-dark">
+                                <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">First</th>
+                                <th scope="col">Last</th>
+                                <th scope="col">Handle</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                                </tr>
+                                <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                                </tr>
+                                <tr>
+                                <th scope="row">3</th>
+                                <td>Larry</td>
+                                <td>the Bird</td>
+                                <td>@twitter</td>
+                                </tr>
+                            </tbody>
+                    </table>
+                </div>
+            </div>-->
+            
+            
         </div>
-        <div id="boton">
+        <!--<div id="boton">
             <button onclick="ver_mapa()"> Ver Mapa </button>
             
         </div>
@@ -23,7 +67,7 @@
         </div>
         <div>
                 <button onclick="agregarMarkers()"> Mostrar todos los Aspectos </button>
-        </div>
+        </div>-->
 		
        
         
@@ -36,9 +80,9 @@
                     https://pepsized.com/customize-your-google-map-markers/
                      https://www.sitepoint.com/google-maps-made-easy-with-gmaps-js/
                 */
-
-
-            var map;
+                
+                       
+    /*   var map;
            function ver_mapa(){
                 map = new GMaps({
                     el: '#map',
@@ -123,7 +167,7 @@
                         });
                         //
                         @endfor
-            }
+            }*/
 
 
 /*map = new google.maps.Map(document.getElementById('map'), {
