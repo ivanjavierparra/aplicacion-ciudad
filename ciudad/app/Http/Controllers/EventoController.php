@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Evento;
+use App\Categoria;
 use Illuminate\Http\Request;
 
 class EventoController extends Controller
@@ -25,8 +26,8 @@ class EventoController extends Controller
     public function create($id)
     {
         $evento = new Evento;
-        //aca busco categoria por id y se la paso.
-        return view('eventos.evento-add', ['evento' => $evento, "id" => $id ]);
+        $categoria = Categoria::getCategoria($id);
+        return view('eventos.evento-add', ['evento' => $evento, "categoria" => $categoria ]);
     }
 
     /**
