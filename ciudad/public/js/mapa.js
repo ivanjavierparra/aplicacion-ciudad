@@ -93,7 +93,7 @@ function ver_mapa(){
      console.log("Markers " + datos[0].nombre);
      var locations = [-43.273564102381144,-65.29729677304687,-43.27218925427647,-65.29485059842528,-43.27637619494724,-65.29158903226318 ];
      var i;
-     for(i=0;i<6;i++){
+     for(i=1;i<6;i++){
         map.addMarker({
             lat: locations[i],
             lng: locations[i+1],
@@ -107,8 +107,24 @@ function ver_mapa(){
                 
             }
     });
-     }
-             
+    }
+     var marker = map.createMarker({
+        lat: locations[0],
+        lng: locations[0+1],
+        title: 'Ubicacion actual',
+        icon: 'img/1.png',
+        infoWindow: {
+            content: '<p>HTML Content</p>'
+        },
+        click: function(e) {
             
+            
+        }
+     })
+     console.log("llegue");
+     //marker.setMap(map);
+     map.addMarker(marker);
+     alert("agrego el mapa");
+     marker.setMap(null);
             
  }

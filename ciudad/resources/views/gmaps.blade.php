@@ -1,6 +1,5 @@
 @extends('layouts.base')
 
-
 @section('content')
         <div id="titulo_principal">
             <h1 class="my-4" style="text-align:center;">Aplicación para el ciudadano</h1> 
@@ -8,70 +7,64 @@
         <div id="titulo_secundario">
             <h2 class="my-4" style="text-align:center;">Mapa de Aspectos</h2> 
         </div>
- 
-        <div class="row justify-content-center">
-
-            <div id="map" style="border:groove;" >
-
-            </div>
-           <!-- <div class="col">
-                <div id="map" style="border:groove;" >
-                    
-                    
-                </div>
-            </div>
-           <div class="col">
-                <div class="table-responsive" style="border:groove;">
-                    <table class="table">
-                                        
-                            <thead class="thead-dark">
-                                <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">First</th>
-                                <th scope="col">Last</th>
-                                <th scope="col">Handle</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                </tr>
-                                <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                                </tr>
-                                <tr>
-                                <th scope="row">3</th>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>@twitter</td>
-                                </tr>
-                            </tbody>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="table-responsive-sm">
+                    <table class="table table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th>Evento/Estado</th>
+                                <th>Descripcion</th>
+                                <th>Fecha</th>
+                            </tr>    
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Accidente de Transito</td>
+                                <td>Choque frontal fiat 600 y ranger</td>
+                                <td>01/01/2016 15:30</td>
+                            </tr>
+                            <tr>
+                                <td>Pelea Callejera</td>
+                                <td>Hinchas de River y De Boca</td>
+                                <td>01/01/2016 15:30</td>
+                            </tr>
+                            <tr>
+                                <td>Accidente de Transito</td>
+                                <td>Choque frontal colectivo y bicicleta</td>
+                                <td>01/01/2016 15:30</td>
+                            </tr>
+                            <tr>
+                                <td>Pelea Callejera</td>
+                                <td>Alumnos del IMA y PJM</td>
+                                <td>01/01/2016 15:30</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
-            </div>-->
-            
-            
+            </div>
+            <div class="col-sm-6">
+                <div id="map" style="border:groove;" ></div>
+            </div>
+            <div class="col-sm-2">
+                <div class="table-responsive-sm">
+                    <table class="table table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th>Leyenda</th>
+                            </tr>    
+                        </thead>
+                        <tbody>
+                            @foreach ($categorias as $categoria)
+                                <tr>
+                                    <td><img src="{{$categoria->icono}}" height="18" width="18"> {{$categoria->nombre}}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <!--<div id="boton">
-            <button onclick="ver_mapa()"> Ver Mapa </button>
-            
-        </div>
-        <div>
-                <button onclick="localizame()"> Geolocalizame </button>
-        </div>
-        <div>
-                <button onclick="agregarMarkers()"> Mostrar todos los Aspectos </button>
-        </div>-->
-		
-       
-        
-        
         <script>
 
                 /*   LEEEME     ---> LINKS COPADOS    
