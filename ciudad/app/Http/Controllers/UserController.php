@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Categoria;
+use App\User;
 use Illuminate\Http\Request;
 
-class CategoriaController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class CategoriaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Categoria  $categoria
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(Categoria $categoria)
+    public function show(User $user)
     {
         //
     }
@@ -52,10 +52,10 @@ class CategoriaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Categoria  $categoria
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(Categoria $categoria)
+    public function edit(User $user)
     {
         //
     }
@@ -64,10 +64,10 @@ class CategoriaController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Categoria  $categoria
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Categoria $categoria)
+    public function update(Request $request, User $user)
     {
         //
     }
@@ -75,40 +75,16 @@ class CategoriaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Categoria  $categoria
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Categoria $categoria)
+    public function destroy(User $user)
     {
         //
-    }
-
-
-    public function obtenerCategorias()
-    {
-        //$c = new Categoria();
-        $categorias = Categoria::getAllCategorias();
-        return view('prueba',['categorias'=>$categorias]);
-    }
-
-    public function probando()
-    {
-        //$c = new Categoria();
-        $categorias = Categoria::getAllCategorias(); //aca deberia obtener los Aspectos y NO las categorias
-        return view('gmaps',['categorias'=>$categorias]);
-    }
-
-    public function dameAjax(){
-        $categorias = Categoria::getAllCategorias(); //aca deberia obtener los Aspectos y NO las categorias
-        return response()->json(
-             $categorias
-        );
     }
 
     public function login()
     {
         return view('login');
     }
-
-
 }

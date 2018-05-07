@@ -40,7 +40,7 @@
                                     Opciones
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="#">Iniciar Sesión</a>
+                                    <a class="dropdown-item" href=" {{route('login')}}  ">Iniciar Sesión</a>
                                     <a class="dropdown-item" href="#">Cerrar Sesión</a>
                                 </div>
                             </li>
