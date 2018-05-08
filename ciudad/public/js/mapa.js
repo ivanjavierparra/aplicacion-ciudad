@@ -1,4 +1,4 @@
-var map;
+/*var map;
 var datos;
 
 
@@ -58,7 +58,7 @@ function ver_mapa(){
     localizame();
   });*/
 
- 
+ /*
  function localizame(){
      GMaps.geolocate({
          success: function(position) {
@@ -127,4 +127,4 @@ function ver_mapa(){
      alert("agrego el mapa");
      marker.setMap(null);
             
- }
+ }*/

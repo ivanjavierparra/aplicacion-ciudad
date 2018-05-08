@@ -22,7 +22,7 @@ Route::get('/', function () {
 
 
 Route::get('/', 'CategoriaController@obtenerCategorias' )->name('inicio');
-Route::get('/aspectos','CategoriaController@probando')->name('mapas');//voy a /aspectos cuando presiono 'Ver Aspectos' en base.blade
+Route::get('/aspectos','AspectoController@getCategoriasyAspectos')->name('mapas');
 Route::get('/ajax', 'CategoriaController@dameAjax' );
 
 
@@ -32,7 +32,7 @@ Route::post('evento/crear', 'EventoController@store');
 Route::get('estadoobjeto/crear', 'EstadoObjetoController@create');
 Route::post('estadoobjeto/crear', 'EstadoObjetoController@store');
 
-Route::get('/login', 'CategoriaController@login' )->name('login');
+Route::get('/login', 'UserController@login' )->name('login');
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();

@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Aspecto;
 use App\Categoria;
+use App\EstadoObjeto;
+use App\Evento;
 use Illuminate\Http\Request;
 
-class CategoriaController extends Controller
+class AspectoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +44,10 @@ class CategoriaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Categoria  $categoria
+     * @param  \App\Aspecto  $aspecto
      * @return \Illuminate\Http\Response
      */
-    public function show(Categoria $categoria)
+    public function show(Aspecto $aspecto)
     {
         //
     }
@@ -52,10 +55,10 @@ class CategoriaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Categoria  $categoria
+     * @param  \App\Aspecto  $aspecto
      * @return \Illuminate\Http\Response
      */
-    public function edit(Categoria $categoria)
+    public function edit(Aspecto $aspecto)
     {
         //
     }
@@ -64,10 +67,10 @@ class CategoriaController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Categoria  $categoria
+     * @param  \App\Aspecto  $aspecto
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Categoria $categoria)
+    public function update(Request $request, Aspecto $aspecto)
     {
         //
     }
@@ -75,31 +78,34 @@ class CategoriaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Categoria  $categoria
+     * @param  \App\Aspecto  $aspecto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Categoria $categoria)
+    public function destroy(Aspecto $aspecto)
     {
         //
     }
 
-
-    public function obtenerCategorias()
+    public function getCategoriasyAspectos()
     {
-        //$c = new Categoria();
-        $categorias = Categoria::getAllCategorias();
-        return view('prueba',['categorias'=>$categorias]);
-    }
+        //obtener todos los eventos
 
-    
-    public function dameAjax(){
-        $categorias = Categoria::getAllCategorias(); //aca deberia obtener los Aspectos y NO las categorias
-        return response()->json(
-             $categorias
-        );
-    }
+        //obtener todos los estados
 
-    
+        //for e ir creando un nuevo objeto
+        
+        $categorias = Categoria::getAllCategorias(); 
+        
+        $eventos = Evento::getAllEventos();
+        
+        
+
+        $estados = EstadoObjeto::getAllEstados();
+
+
+
+        return view('probando',['categorias'=>$categorias,'eventos'=>$eventos,'estados'=>$estados]);
+    }
 
 
 }

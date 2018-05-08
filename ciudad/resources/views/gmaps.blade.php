@@ -106,81 +106,74 @@
                                         <thead class="thead-dark">
                                             <tr>
                                                 <th>Evento/Estado</th>
-                                                
                                                 <th>Fecha</th>
                                                 <th>Acciones</th>
                                             </tr>    
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>Accidente de Transito</td>
+                                        @foreach($eventos as $evento)
                                                 
-                                                <td>01/01/2016 15:30</td>
+                                            <tr>
+                                                <td>
+                                                @foreach($categorias as $categoria)
+                                                    @if(unserialize($evento)->categoria_id === $categoria->id)
+                                                        {{$categoria->nombre}}
+                                                        @break
+                                                    @endif
+                                                @endforeach    
+                                                </td>
+                                                <td>{{unserialize($evento)->created_at}}</td>
                                                 <td style="align:justify;">
-                                                    <button id="boton-filtrar-1" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id)" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
-                                                    <button id="boton-solucionar-1" type="button" class="btn btn-success btn-sm" data-toggle="tooltip" title="Solucionar estado de objeto" > <img src="img/solucionar.png" height="18" width="18"></button>
-                                                    <button id="boton-eliminar-1" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento"> <img src="img/eliminar.png" height="18" width="18"></button>
+                                                    <button id="boton-filtrar-evento-{{unserialize($evento)->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id)" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
+                                                    <button id="boton-eliminar-evento-{{unserialize($evento)->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento"> <img src="img/eliminar.png" height="18" width="18"></button>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td id="datos-1" colspan="5" class="collapse">
+                                                <td id="datos-evento-{{unserialize($evento)->id}}" colspan="5" class="collapse">
                                                     <div>
-                                                        Fecha: 30 jun. <br>  Horario: 17 hs <br> Estadio: Kazán Arena <br> Ciudad: Kazán
+                                                        Fecha en que Sucedió: {{unserialize($evento)->fecha}} <br>  
+                                                        Descripción: {{unserialize($evento)->descripcion}} <br> 
+                                                        Latitud: {{unserialize($evento)->latitud}} <br> 
+                                                        Longitud: {{unserialize($evento)->longitud}} <br>
+                                                        Denunciante: {{unserialize($evento)->denunciante_id}} <br>
+                                                        Fecha en que fue registrado en el Sistema: {{unserialize($evento)->created_at}} <br>
                                                     </div>
                                                 </td>
                                             </tr>
+                                            @endforeach
+                                            @foreach($estados as $estado)
                                             <tr>
-                                                <td>Pelea Callejera</td>
-                                                
-                                                <td>01/01/2016 15:30</td>
+                                                <td>
+                                                @foreach($categorias as $categoria)
+                                                    @if(unserialize($estado)->categoria_id === $categoria->id)
+                                                        {{$categoria->nombre}}
+                                                        @break
+                                                    @endif
+                                                @endforeach    
+                                                </td>
+                                                <td>{{unserialize($estado)->created_at}}</td>
                                                 <td style="align:justify;">
-                                                    <button id="boton-filtrar-2" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id)" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
-                                                    <button id="boton-solucionar-2" type="button" class="btn btn-success btn-sm" data-toggle="tooltip" title="Solucionar estado de objeto" > <img src="img/solucionar.png" height="18" width="18"></button>
-                                                    <button id="boton-eliminar-2" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento"> <img src="img/eliminar.png" height="18" width="18"></button>
+                                                    <button id="boton-filtrar-estado-{{unserialize($estado)->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id)" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
+                                                    <button id="boton-solucionar-estado-{{unserialize($estado)->id}}" type="button" class="btn btn-success btn-sm" data-toggle="tooltip" title="Solucionar estado de objeto" > <img src="img/solucionar.png" height="18" width="18"></button>
+                                                    <button id="boton-eliminar-estado-{{unserialize($estado)->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento"> <img src="img/eliminar.png" height="18" width="18"></button>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td id="datos-2" colspan="5" class="collapse">
+                                                <td id="datos-estado-{{unserialize($estado)->id}}" colspan="5" class="collapse">
                                                     <div>
-                                                        Fecha: 30 jun. <br>  Horario: 17 hs <br> Estadio: Kazán Arena <br> Ciudad: Kazán
+                                                        Fecha en que Sucedió: {{unserialize($estado)->fecha}} <br>  
+                                                        Descripción: {{unserialize($estado)->descripcion}} <br> 
+                                                        Latitud: {{unserialize($estado)->latitud}} <br> 
+                                                        Longitud: {{unserialize($estado)->longitud}} <br>
+                                                        Denunciante: {{unserialize($estado)->denunciante_id}} <br>
+                                                        Fecha en que fue registrado en el Sistema: {{unserialize($estado)->created_at}} <br>
+                                                        Solucionado: {{unserialize($estado)->solucionado}}
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>Accidente de Transito</td>
-                                                
-                                                <td>01/01/2016 15:30</td>
-                                                <td style="align:justify;">
-                                                    <button id="boton-filtrar-3" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id)" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
-                                                    <button id="boton-solucionar-3" type="button" class="btn btn-success btn-sm" data-toggle="tooltip" title="Solucionar estado de objeto" > <img src="img/solucionar.png" height="18" width="18"></button>
-                                                    <button id="boton-eliminar-3" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento"> <img src="img/eliminar.png" height="18" width="18"></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td id="datos-3" colspan="5" class="collapse">
-                                                    <div>
-                                                        Fecha: 30 jun. <br>  Horario: 17 hs <br> Estadio: Kazán Arena <br> Ciudad: Kazán
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Pelea Callejera</td>
-                                                
-                                                <td>01/01/2016 15:30</td>
-                                                <td style="align:justify;">
-                                                    <button id="boton-filtrar-4" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id)" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
-                                                    <button id="boton-solucionar-4" type="button" class="btn btn-success btn-sm" data-toggle="tooltip" title="Solucionar estado de objeto" > <img src="img/solucionar.png" height="18" width="18"></button>
-                                                    <button id="boton-eliminar-4" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento"> <img src="img/eliminar.png" height="18" width="18"></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td id="datos-4" colspan="5" class="collapse">
-                                                    <div>
-                                                        Fecha: 30 jun. <br>  Horario: 17 hs <br> Estadio: Kazán Arena <br> Ciudad: Kazán
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                            @endforeach
                                         </tbody>
+                                       
                                     </table>
                             </div>
                         </div>
@@ -202,8 +195,21 @@
         
       </div> 
 
-        
+       
+           
+       
+          
+      
+          
+                
 
+                @foreach($estados as $estado)
+                     {{ $a = unserialize($estado) }} 
+                @endforeach
+
+           
+
+        
 
         <script>
                 function ocultarFiltros(){
@@ -212,7 +218,15 @@
 
                 function mostrarInfo(id){
                     var thenum = id.replace( /^\D+/g, ''); //obtengo los numeros del id: Ej:
-                    var selector = "#datos-" + thenum;
+                    var selector = "";
+                    if (id.indexOf("evento") >= 0){
+                        selector = "#datos-evento-" + thenum;
+                        
+                    }
+                    else{
+                        selector = "#datos-estado-" + thenum;
+                        
+                    }
                     console.log(selector);
                     $(selector).toggle();
                 }

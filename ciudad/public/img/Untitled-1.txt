@@ -1,0 +1,34 @@
+ @for ($i = 0; $i < count($estados); $i++) 
+                
+                @foreach($estados as $lista)
+                    @for ($j = 1; $j < count($lista); $j++) 
+                            {{$estado = $lista[$j]}}
+                            {{$estado}}
+                    @endfor
+                @endforeach
+                    
+            @endfor  
+
+
+
+            @foreach($eventos as $e)
+
+                    {{$a = json_deencode($e,true)}}
+
+           @endforeach
+
+
+           @foreach(json_decode($mydata, true) as $value)
+    Member ID: {{ $value['all_pelanggan']['name'] }}   
+@endforeach
+
+
+
+@foreach($estados as $estado)
+        {{ $estado->id }}
+@endforeach
+@foreach($eventos as $evento)
+        <h1>{{ $evento }}</h1>
+        {{ $evento->getAllEventos() }}
+
+@endforeach
