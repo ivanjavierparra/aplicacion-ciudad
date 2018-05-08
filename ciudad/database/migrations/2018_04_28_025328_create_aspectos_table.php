@@ -17,12 +17,15 @@ class CreateAspectosTable extends Migration
             $table->increments('id');
             $table->dateTime('fecha');
             $table->mediumText('descripcion');
-            $table->float('latitud', 11, 3);
-            $table->float('longitud', 11, 3);
+            $table->float('latitud', 15, 3);
+            $table->float('longitud', 15, 3);
             $table->unsignedInteger('categoria_id');
             $table->foreign('categoria_id')->references('id')->on('categorias');
             $table->unsignedInteger('denunciante_id');
             $table->foreign('denunciante_id')->references('id')->on('denunciantes');
+            $table->dateTime('fecha_ocurrencia')->nullable();
+            $table->boolean('solucionado')->nullable();
+            $table->enum('tipo', ['evento', 'estadoobjeto']);
             $table->timestamps();
         });
     }

@@ -18,7 +18,7 @@
             <!-- Navigation -->
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
                 <div class="container">
-                    <a class="navbar-brand" href="#">
+                    <a class="navbar-brand" href="/">
                         <img src={{ asset("img/trelew.png") }} alt="Smiley face" height="42" width="42"><!---->
                         Aplicación Ciudad
                     </a>
