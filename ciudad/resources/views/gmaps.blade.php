@@ -58,14 +58,14 @@
                             <div class="filtro col-lg-4 col-md-10 col-sm-12 col-xs-12" >
                                 <span>Aspectos<span>
                                 
-                                <select name="combo-aspectos"> 
+                                <select id="combo-aspectos" name="combo-aspectos"> 
                                     <option value="todos" selected>Todos</option>
                                     <option value="eventos">Eventos</option>
                                     <option value="estados">Estado de Objetos</option>
-                                    <option value="estados">Eventos Expirados</option>
-                                    <option value="estados">Eventos No Expirados</option>
-                                    <option value="estados">Estados de Objetos Solucionados</option>
-                                    <option value="estados">Estados de Objetos No Solucionados</option>
+                                    <option value="estados-expirados">Eventos Expirados</option>
+                                    <option value="estados-no-expirados">Eventos No Expirados</option>
+                                    <option value="estados-solucionados">Estados de Objetos Solucionados</option>
+                                    <option value="estados-no-solucionados">Estados de Objetos No Solucionados</option>
                                 </select>
                             </div>
                         
@@ -74,14 +74,14 @@
                                 <div class="filtro col-lg-4 col-md-6 col-sm-12 col-xs-12">
                                 <span>Fecha Desde</span>
                                 <!--<input type="datetime-local" name="bdaytime"> -->
-                                <input id="date" type="date" min="2018-01-01">
+                                <input id="fecha-desde" type="date" min="2018-01-01" value="{{date("Y-m-d")}}" value="{{date("Y-m-d")}}" onkeypress="return false" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">
                                 </div>
                             
                                 
 
                                 <div class="filtro col-lg-4 col-md-6 col-sm-12 col-xs-12">
                                 <span>Fecha Hasta</span>
-                                <input id="date" type="date" min="2018-01-01">
+                                <input id="fecha-hasta" type="date" min="2018-01-01" max="{{date("Y-m-d")}}" value="{{date("Y-m-d")}}" onkeypress="return false" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">
                                 </div>
                             
                     
@@ -91,7 +91,7 @@
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom:5px;">
                                             <div class="panel-heading">
                                                     <div style="text-align:center;">
-                                                    <button id="boton-filtrar" type="button" class="btn btn-info btn-sm"> <img src="img/aceptar.png" height="18" width="18" data-toggle="tooltip" title="Aplicar filtros"> Aplicar</button>
+                                                    <button id="boton-aplicar-filtros" onclick="filtrar()" type="button" class="btn btn-info btn-sm"> <img src="img/aceptar.png" height="18" width="18" data-toggle="tooltip" title="Aplicar filtros"> Aplicar</button>
                                                     </div>
                                             </div>
                                     </div>
@@ -110,33 +110,33 @@
                                                 <th>Acciones</th>
                                             </tr>    
                                         </thead>
-                                        <tbody>
+                                        <tbody id="body-tabla">
                                         @foreach($eventos as $evento)
                                                 
                                             <tr>
                                                 <td>
                                                 @foreach($categorias as $categoria)
-                                                    @if(unserialize($evento)->categoria_id === $categoria->id)
+                                                    @if($evento->categoria_id === $categoria->id)
                                                         {{$categoria->nombre}}
                                                         @break
                                                     @endif
                                                 @endforeach    
                                                 </td>
-                                                <td>{{unserialize($evento)->created_at}}</td>
+                                                <td>{{$evento->created_at}}</td>
                                                 <td style="align:justify;">
-                                                    <button id="boton-filtrar-evento-{{unserialize($evento)->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id)" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
-                                                    <button id="boton-eliminar-evento-{{unserialize($evento)->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento"> <img src="img/eliminar.png" height="18" width="18"></button>
+                                                    <button id="boton-filtrar-evento-{{$evento->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id)" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
+                                                    <button id="boton-eliminar-evento-{{$evento->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento" onclick="eliminar({{$aspectoEliminar = $evento}})"> <img src="img/eliminar.png" height="18" width="18"></button>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td id="datos-evento-{{unserialize($evento)->id}}" colspan="5" class="collapse">
+                                                <td id="datos-evento-{{$evento->id}}" colspan="5" class="collapse">
                                                     <div>
-                                                        Fecha en que Sucedió: {{unserialize($evento)->fecha}} <br>  
-                                                        Descripción: {{unserialize($evento)->descripcion}} <br> 
-                                                        Latitud: {{unserialize($evento)->latitud}} <br> 
-                                                        Longitud: {{unserialize($evento)->longitud}} <br>
-                                                        Denunciante: {{unserialize($evento)->denunciante_id}} <br>
-                                                        Fecha en que fue registrado en el Sistema: {{unserialize($evento)->created_at}} <br>
+                                                        Fecha de Ocurrencia: {{$evento->fecha_ocurrencia}} <br>  
+                                                        Descripción: {{$evento->descripcion}} <br> 
+                                                        Latitud: {{$evento->latitud}} <br> 
+                                                        Longitud: {{$evento->longitud}} <br>
+                                                        Denunciante: {{$evento->denunciante_id}} <br>
+                                                        Fecha en que fue registrado en el Sistema: {{$evento->created_at}} <br>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -145,29 +145,33 @@
                                             <tr>
                                                 <td>
                                                 @foreach($categorias as $categoria)
-                                                    @if(unserialize($estado)->categoria_id === $categoria->id)
+                                                    @if($estado->categoria_id === $categoria->id)
                                                         {{$categoria->nombre}}
                                                         @break
                                                     @endif
                                                 @endforeach    
                                                 </td>
-                                                <td>{{unserialize($estado)->created_at}}</td>
+                                                <td>{{$estado->created_at}}</td>
                                                 <td style="align:justify;">
-                                                    <button id="boton-filtrar-estado-{{unserialize($estado)->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id)" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
-                                                    <button id="boton-solucionar-estado-{{unserialize($estado)->id}}" type="button" class="btn btn-success btn-sm" data-toggle="tooltip" title="Solucionar estado de objeto" > <img src="img/solucionar.png" height="18" width="18"></button>
-                                                    <button id="boton-eliminar-estado-{{unserialize($estado)->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento"> <img src="img/eliminar.png" height="18" width="18"></button>
+                                                    <button id="boton-filtrar-estado-{{$estado->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id)" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
+                                                    <button id="boton-solucionar-estado-{{$estado->id}}" type="button" class="btn btn-success btn-sm" data-toggle="tooltip" title="@if($estado->solucionado === 1) Ya esta solucionado @else Solucionar este elemento @endif" @if($estado->solucionado === 1) disabled @endif > <img src="img/solucionar.png" height="18" width="18"></button>
+                                                    <button id="boton-eliminar-estado-{{$estado->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento"> <img src="img/eliminar.png" height="18" width="18"></button>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td id="datos-estado-{{unserialize($estado)->id}}" colspan="5" class="collapse">
+                                                <td id="datos-estado-{{$estado->id}}" colspan="5" class="collapse">
                                                     <div>
-                                                        Fecha en que Sucedió: {{unserialize($estado)->fecha}} <br>  
-                                                        Descripción: {{unserialize($estado)->descripcion}} <br> 
-                                                        Latitud: {{unserialize($estado)->latitud}} <br> 
-                                                        Longitud: {{unserialize($estado)->longitud}} <br>
-                                                        Denunciante: {{unserialize($estado)->denunciante_id}} <br>
-                                                        Fecha en que fue registrado en el Sistema: {{unserialize($estado)->created_at}} <br>
-                                                        Solucionado: {{unserialize($estado)->solucionado}}
+                                                        Fecha en que Sucedió: {{$estado->fecha}} <br>  
+                                                        Descripción: {{$estado->descripcion}} <br> 
+                                                        Latitud: {{$estado->latitud}} <br> 
+                                                        Longitud: {{$estado->longitud}} <br>
+                                                        Denunciante: {{$estado->denunciante_id}} <br>
+                                                        Fecha en que fue registrado en el Sistema: {{$estado->created_at}} <br>
+                                                        Solucionado: @if($estado->solucionado === 0)
+                                                                            No Solucionado
+                                                                     @else
+                                                                            Solucionado
+                                                                     @endif
                                                     </div>
                                                 </td>
                                             </tr>
@@ -195,7 +199,30 @@
         
       </div> 
 
-       
+
+
+       <!-- modal eliminar -->
+       <div id="myModal" class="modal" tabindex="-1" role="dialog">
+        <div  class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="titulo-modal" class="modal-title">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#myModal').modal('toggle');">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="texto-modal">Modal body text goes here.</p>
+                <p>@if(!empty($aspectoEliminar) > 0){{$aspectoEliminar}}@endif</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Aceptar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#myModal').modal('toggle');">Cancelar</button>
+            </div>
+            </div>
+        </div>
+        </div>
+
            
        
           
@@ -203,15 +230,16 @@
           
                 
 
-                @foreach($estados as $estado)
-                     {{ $a = unserialize($estado) }} 
-                @endforeach
-
+               
            
 
         
 
         <script>
+
+
+                
+
                 function ocultarFiltros(){
                     $("#filtros").toggle();
                 }
@@ -230,16 +258,182 @@
                     console.log(selector);
                     $(selector).toggle();
                 }
-               
+
+                function filtrar(){
+                    var combo = $("#combo-aspectos").val();
+                    var fecha_desde = $("#fecha-desde").val();
+                    var fecha_hasta = $("#fecha-hasta").val();
+                    console.log(combo);
+                    console.log(fecha_desde);
+                    console.log(fecha_hasta);
+                    $("#body-tabla").empty();
+
+                    switch(combo){
+                        case 'todos':
+                            mostrarTodo();
+                            break;
+                        case 'eventos':
+                            mostrarEventos();
+                            break;
+                        case 'estados':
+                             mostrarEstados();
+                            break;
+                    }
+
+                    
+                }
+
+                
+                
+                function mostrarEventos(){
+                    @foreach($eventos as $evento)
+                                var tabla = `
+                                                
+                                                    
+                                                        <tr>
+                                                            <td>
+                                                                @foreach($categorias as $categoria)
+                                                                    @if($evento->categoria_id === $categoria->id)
+                                                                        {{$categoria->nombre}}
+                                                                        @break
+                                                                    @endif
+                                                                @endforeach
+                                                            </td>
+                                                            <td>{{$evento->created_at}}</td>
+                                                            <td style="align:justify;">
+                                                                <button id="boton-filtrar-evento-{{$evento->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id)" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
+                                                                <button id="boton-eliminar-evento-{{$evento->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento"> <img src="img/eliminar.png" height="18" width="18"></button>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td id="datos-evento-{{$evento->id}}" colspan="5" class="collapse">
+                                                                <div>
+                                                                    Fecha de Ocurrencia: {{$evento->fecha_ocurrencia}} <br>  
+                                                                    Descripción: {{$evento->descripcion}} <br> 
+                                                                    Latitud: {{$evento->latitud}} <br> 
+                                                                    Longitud: {{$evento->longitud}} <br>
+                                                                    Denunciante: {{$evento->denunciante_id}} <br>
+                                                                    Fecha en que fue registrado en el Sistema: {{$evento->created_at}} <br>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    
+                                                
+                                            `;
+
+                            $('#body-tabla').append(tabla);
+                        
+                                                    
+                    @endforeach
+                                                
+                                                
+                                               
+                }
+                    
+
+
+
+
+                function mostrarEstados(){
+                    @foreach($estados as $estado)
+                                var tabla = `
+                                                
+                                                    
+                                            <tr>
+                                                <td>
+                                                @foreach($categorias as $categoria)
+                                                    @if($estado->categoria_id === $categoria->id)
+                                                        {{$categoria->nombre}}
+                                                        @break
+                                                    @endif
+                                                @endforeach    
+                                                </td>
+                                                <td>{{$estado->created_at}}</td>
+                                                <td style="align:justify;">
+                                                    <button id="boton-filtrar-estado-{{$estado->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id)" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
+                                                    <button id="boton-solucionar-estado-{{$estado->id}}" type="button" class="btn btn-success btn-sm" data-toggle="tooltip" title="@if($estado->solucionado === 1) Ya esta solucionado @else Solucionar este elemento @endif" @if($estado->solucionado === 1) disabled @endif > <img src="img/solucionar.png" height="18" width="18"></button>
+                                                    <button id="boton-eliminar-estado-{{$estado->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento"> <img src="img/eliminar.png" height="18" width="18"></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td id="datos-estado-{{$estado->id}}" colspan="5" class="collapse">
+                                                    <div>
+                                                        Fecha en que Sucedió: {{$estado->fecha}} <br>  
+                                                        Descripción: {{$estado->descripcion}} <br> 
+                                                        Latitud: {{$estado->latitud}} <br> 
+                                                        Longitud: {{$estado->longitud}} <br>
+                                                        Denunciante: {{$estado->denunciante_id}} <br>
+                                                        Fecha en que fue registrado en el Sistema: {{$estado->created_at}} <br>
+                                                        Solucionado: @if($estado->solucionado === 0)
+                                                                            No Solucionado
+                                                                     @else
+                                                                            Solucionado
+                                                                     @endif
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                                    
+                                                
+                                            `;
+
+                            $('#body-tabla').append(tabla);
+                        
+                                                    
+                    @endforeach
+                                                
+                                                
+                                               
+                }
+
+
+
+
+                function mostrarTodo(){
+                    mostrarEventos();
+                    mostrarEstados();
+                }
+
+
+
+                function eliminar(id){
+                        console.log(id);
+                        
+                        $('#titulo-modal').text('Hola');
+                        $('#texto-modal').text('chau');
+                        $('#myModal').show(id);
+                        
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     /*   LEEEME     ---> LINKS COPADOS    
                 --------------------------------------
                 
                     https://pepsized.com/customize-your-google-map-markers/
                      https://www.sitepoint.com/google-maps-made-easy-with-gmaps-js/
                 */
-                
+                $(function() {
+                   ver_mapa();
+                   //localizame();
+                   //agregarMarkers();
+                });
                        
-   /*    var map;
+       var map;
            function ver_mapa(){
                 map = new GMaps({
                     el: '#map',
@@ -264,10 +458,12 @@
                             }
                         });
 
-                        alert('click');
+                       // alert('click');
 
                     },
                 });
+                localizame();
+                agregarMarkers();
             }  
             
             function localizame(){
@@ -286,7 +482,7 @@
                                 },
                                 click: function(e) {
                                     console.log(position.coords.latitude + " *** " + position.coords.longitude );                                
-                                    alert('You clicked in this marker');
+                                    //alert('You clicked in this marker');
                                     
                                 }
                         });
@@ -299,7 +495,7 @@
                         alert("Your browser does not support geolocation");
                     },
                     always: function() {
-                        alert("Done!");
+                       // alert("Done!");
                     }
                 });
             }
@@ -308,12 +504,13 @@
             function agregarMarkers(){
                 var locations = [-43.273564102381144,-65.29729677304687,-43.27218925427647,-65.29485059842528,-43.27637619494724,-65.29158903226318 ];
                 @for ($i = 0; $i < 6; $i+=2)    
-                        
+                    @foreach($categorias as $categoria)    
                         map.addMarker({
                                 lat: locations[{{$i}}],
                                 lng: locations[{{$i+1}}],
                                 title: 'Ubicacion Actual',
                                 icon: 'img/1.png',
+                                
                                 infoWindow: {
                                     content: '<p>HTML Content</p>'
                                 },
@@ -322,9 +519,11 @@
                                     
                                 }
                         });
-                        //
-                        @endfor
-            }*/
+                        @break
+                    @endforeach
+                    @break
+                @endfor
+            }
 
 
 /*map = new google.maps.Map(document.getElementById('map'), {

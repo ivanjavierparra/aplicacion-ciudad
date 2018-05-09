@@ -4,3 +4,10 @@
         
 
 @endforeach
+
+
+@foreach($eventos as $evento)
+        <h1>{{ $evento }}</h1>
+        
+
+@endforeach

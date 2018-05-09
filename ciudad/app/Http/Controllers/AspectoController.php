@@ -88,23 +88,14 @@ class AspectoController extends Controller
 
     public function getCategoriasyAspectos()
     {
-        //obtener todos los eventos
-
-        //obtener todos los estados
-
-        //for e ir creando un nuevo objeto
         
         $categorias = Categoria::getAllCategorias(); 
         
         $eventos = Evento::getAllEventos();
         
-        
-
         $estados = EstadoObjeto::getAllEstados();
 
-
-
-        return view('probando',['categorias'=>$categorias,'eventos'=>$eventos,'estados'=>$estados]);
+        return view('gmaps',['categorias'=>$categorias,'eventos'=>$eventos,'estados'=>$estados]);
     }
 
 

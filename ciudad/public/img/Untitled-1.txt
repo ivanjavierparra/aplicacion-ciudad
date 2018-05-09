@@ -32,3 +32,72 @@
         {{ $evento->getAllEventos() }}
 
 @endforeach
+
+
+
+
+
+
+
+
+
+@foreach($eventos as $evento)
+                                                
+                                                <tr>
+                                                    <td>
+                                                    @foreach($categorias as $categoria)
+                                                        @if($evento->categoria_id === $categoria->id)
+                                                            {{$categoria->nombre}}
+                                                            @break
+                                                        @endif
+                                                    @endforeach    
+                                                    </td>
+                                                    <td>{{$evento->created_at}}</td>
+                                                    <td style="align:justify;">
+                                                        <button id="boton-filtrar-evento-{{$evento->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id)" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
+                                                        <button id="boton-eliminar-evento-{{$evento->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento"> <img src="img/eliminar.png" height="18" width="18"></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td id="datos-evento-{{$evento->id}}" colspan="5" class="collapse">
+                                                        <div>
+                                                            Fecha de Ocurrencia: {{$evento->fecha_ocurrencia}} <br>  
+                                                            Descripción: {{$evento->descripcion}} <br> 
+                                                            Latitud: {{$evento->latitud}} <br> 
+                                                            Longitud: {{$evento->longitud}} <br>
+                                                            Denunciante: {{$evento->denunciante_id}} <br>
+                                                            Fecha en que fue registrado en el Sistema: {{$evento->created_at}} <br>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+
+
+
+
+//$('#body-tabla').append('<tr><td>@foreach($categorias as $categoria)@if($evento->categoria_id === $categoria->id){{$categoria->nombre}}@break@endif@endforeach</td><td>{{$evento->created_at}}</td><td style="align:justify;"><button id="boton-filtrar-evento-{{$evento->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id)" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button><button id="boton-eliminar-evento-{{$evento->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento"> <img src="img/eliminar.png" height="18" width="18"></button></td></tr><tr><td id="datos-evento-{{$evento->id}}" colspan="5" class="collapse"><div>Fecha de Ocurrencia: {{$evento->fecha_ocurrencia}} <br>Descripción: {{$evento->descripcion}} <br>Latitud: {{$evento->latitud}} <br>Longitud: {{$evento->longitud}} <br>Denunciante: {{$evento->denunciante_id}} <br>Fecha en que fue registrado en el Sistema: {{$evento->created_at}} <br></div></td></tr>');
+
+
+
+
+@foreach($eventos as $evento)
+                        $('#body-tabla').append('<tr><td>{{$evento->id}}</td><td>{{$evento->descripcion}}</td><td>{{$evento->categoria_id}}</td></tr>');
+                    @endforeach
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
