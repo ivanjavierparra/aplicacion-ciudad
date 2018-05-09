@@ -4,6 +4,10 @@
     <div id="formulario-estado-objeto">
     {{ Form::model($estado_objeto, ['action' => 'EstadoObjetoController@store']) }}
         <div class="form-group">
+        {{ Form::label('categoria', 'Categoría') }}
+        {{ Form::text('categoria', $categoria->nombre, ['readonly','class' => 'form-control']) }}
+        </div>
+        <div class="form-group">
         {{ Form::label('descripcion', 'Descripción') }}
         {{ Form::textarea('descripcion', '', ['class' => 'form-control']) }}
         </div>
