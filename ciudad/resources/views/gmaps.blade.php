@@ -263,24 +263,10 @@
                     var combo = $("#combo-aspectos").val();
                     var fecha_desde = $("#fecha-desde").val();
                     var fecha_hasta = $("#fecha-hasta").val();
-                    console.log(combo);
-                    console.log(fecha_desde);
-                    console.log(fecha_hasta);
-                    $("#body-tabla").empty();
-
-                    switch(combo){
-                        case 'todos':
-                            mostrarTodo();
-                            break;
-                        case 'eventos':
-                            mostrarEventos();
-                            break;
-                        case 'estados':
-                             mostrarEstados();
-                            break;
-                    }
-
                     
+                    $.ajax({url: "demo_test.txt", success: function(result){
+                        $("#div1").html(result);
+                    }});                    
                 }
 
                 
