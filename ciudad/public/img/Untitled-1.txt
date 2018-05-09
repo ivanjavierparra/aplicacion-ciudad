@@ -98,6 +98,22 @@
 
 
 
-
+/*map.addMarker({
+                                lat: locations[i],
+                                lng: locations[i+1],
+                                title: 'Ubicacion Actual',
+                                icon : {
+                                    size : new google.maps.Size(32, 32),
+                                    url : 'img/car.png'
+                                }
+                                
+                                infoWindow: {
+                                    content: '<p>HTML Content</p>'
+                                },
+                                click: function(e) {
+                                    
+                                    
+                                }
+                        });*/
 
 
