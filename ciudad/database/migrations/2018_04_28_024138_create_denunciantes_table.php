@@ -16,7 +16,7 @@ class CreateDenunciantesTable extends Migration
         Schema::create('denunciantes', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->string('email',20);
+            $table->string('email',60);
             $table->string('telefono',20);
         });
     }

@@ -263,6 +263,7 @@
                     var combo = $("#combo-aspectos").val();
                     var fecha_desde = $("#fecha-desde").val();
                     var fecha_hasta = $("#fecha-hasta").val();
+<<<<<<< HEAD
                     console.log(combo);
                     console.log(fecha_desde);
                     console.log(fecha_hasta);
@@ -285,7 +286,12 @@
                             break;
                     }
 
+=======
+>>>>>>> d5ec5fa065b306bab76774c14aa6e410146640a2
                     
+                    $.ajax({url: "demo_test.txt", success: function(result){
+                        $("#div1").html(result);
+                    }});                    
                 }
 
                 
