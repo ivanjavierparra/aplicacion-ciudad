@@ -44,7 +44,7 @@
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom:5px;">
                                     <div class="panel-heading">
                                             <div style="text-align:right;">
-                                            <button id="boton-filtrar" type="button" class="btn btn-info btn-sm" onclick=ocultarFiltros()> <img src="img/lupa.png" height="18" width="18" data-toggle="tooltip" title="Mostrar filtros"> Filtrar</button>
+                                            <button id="boton-filtrar" type="button" class="btn btn-info btn-sm" onclick="$('#filtros').toggle();"> <img src="img/lupa.png" height="18" width="18" data-toggle="tooltip" title="Mostrar filtros"> Filtrar</button>
                                             </div>
                                     </div>
                             </div>
@@ -128,7 +128,7 @@
                                                 </td>
                                                 <td>{{$evento->created_at}}</td>
                                                 <td style="align:justify;">
-                                                    <button id="boton-filtrar-evento-{{$evento->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id)" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
+                                                    <button id="boton-filtrar-evento-{{$evento->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id,{{$evento->latitud}},{{$evento->longitud}})" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
                                                     <button id="boton-localizar-evento-{{$evento->id}}" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" title="Localizar en el mapa" onclick="localizarAspectoMapa({{$evento}})"> <img src="img/localizar.png" height="18" width="18"></button>
                                                     <button id="boton-eliminar-evento-{{$evento->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento" onclick="eliminar({{$evento}})"> <img src="img/eliminar.png" height="18" width="18"></button>
                                                 </td>
@@ -136,12 +136,11 @@
                                             <tr>
                                                 <td id="datos-evento-{{$evento->id}}" colspan="5" class="collapse">
                                                     <div>
-                                                        Fecha de Ocurrencia: {{$evento->fecha_ocurrencia}} <br>  
-                                                        Descripción: {{$evento->descripcion}} <br> 
-                                                        Latitud: {{$evento->latitud}} <br> 
-                                                        Longitud: {{$evento->longitud}} <br>
-                                                        Denunciante: {{$evento->denunciante_id}} <br>
-                                                        Fecha en que fue registrado en el Sistema: {{$evento->created_at}} <br>
+                                                        <b>Fecha de Ocurrencia:</b> {{$evento->fecha_ocurrencia}} <br>  
+                                                        <b>Descripción:</b> {{$evento->descripcion}} <br> 
+                                                        <b>Dirección: </b><span id="direccion-{{$evento->id}}"></span> <br>
+                                                        <b>Denunciante:</b> {{$evento->denunciante_id}} <br>
+                                                        <b>Fecha en que fue registrado en el Sistema:</b> {{$evento->created_at}} <br>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -159,7 +158,7 @@
                                                 </td>
                                                 <td>{{$estado->created_at}}</td>
                                                 <td style="align:justify;">
-                                                    <button id="boton-filtrar-estado-{{$estado->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id)" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
+                                                    <button id="boton-filtrar-estado-{{$estado->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id,{{$estado->latitud}},{{$estado->longitud}})" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
                                                     <button id="boton-localizar-evento-{{$evento->id}}" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" title="Localizar en el mapa" onclick="localizarAspectoMapa({{$estado}})"> <img src="img/localizar.png" height="18" width="18"></button>
                                                     <button id="boton-solucionar-estado-{{$estado->id}}" type="button" class="btn btn-success btn-sm" data-toggle="tooltip" title="@if($estado->solucionado === 1) Ya esta solucionado @else Solucionar este elemento @endif" @if($estado->solucionado === 1) disabled @endif > <img src="img/solucionar.png" height="18" width="18"></button>
                                                     <button id="boton-eliminar-estado-{{$estado->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento" onclick="eliminar({{$estado}})"> <img src="img/eliminar.png" height="18" width="18"></button>
@@ -168,13 +167,12 @@
                                             <tr>
                                                 <td id="datos-estado-{{$estado->id}}" colspan="5" class="collapse">
                                                     <div>
-                                                        Fecha en que Sucedió: {{$estado->fecha}} <br>  
-                                                        Descripción: {{$estado->descripcion}} <br> 
-                                                        Latitud: {{$estado->latitud}} <br> 
-                                                        Longitud: {{$estado->longitud}} <br>
-                                                        Denunciante: {{$estado->denunciante_id}} <br>
-                                                        Fecha en que fue registrado en el Sistema: {{$estado->created_at}} <br>
-                                                        Solucionado: @if($estado->solucionado === 0)
+                                                        <b>Fecha en que Sucedió:</b> {{$estado->fecha}} <br>  
+                                                        <b>Descripción:</b> {{$estado->descripcion}} <br> 
+                                                        <b>Dirección: </b><span id="direccion-{{$estado->id}}"></span> <br>
+                                                        <b>Denunciante:</b> {{$estado->denunciante_id}} <br>
+                                                        <b>Fecha en que fue registrado en el Sistema:</b> {{$estado->created_at}} <br>
+                                                        <b>Solucionado:</b> @if($estado->solucionado === 0)
                                                                             No
                                                                      @else
                                                                             Si
@@ -244,14 +242,10 @@
 
         <script>
 
-
-                
-
-                function ocultarFiltros(){
-                    $("#filtros").toggle();
-                }
-
-                function mostrarInfo(id){
+                //me muestra los datos escondidos en la tabla cuando apreto el boton verInfo.
+                //además, se fija si este td esta oculto o no, si no lo esta lo que hace es
+                //llamar a funcion reverse_geocoding (la cual obtiene a partir de lat y long una direccion).
+                function mostrarInfo(id,lat,lon){
                     var thenum = id.replace( /^\D+/g, ''); //obtengo los numeros del id: Ej:
                     var selector = "";
                     if (id.indexOf("evento") >= 0){
@@ -263,11 +257,38 @@
                         
                     }
                     console.log(selector);
+                    
                     $(selector).toggle();
+                    
+                    if(!$(selector).is(':hidden')) {
+                        var selec = "#direccion-"+thenum;
+                        reverse_geocoding(selec,lat,lon);
+                    }
+                }
+
+                //dada una lat y long te devuelve la direccion
+                //Peligro: La API de google te permite hacer pocas consultas por minuto, despues te bloquea por cierto tiempo
+                function reverse_geocoding(selec,lat,lon){
+                    var latlng = new google.maps.LatLng(lat, lon);
+                    var geocoder = new google.maps.Geocoder();
+                    geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+                        if (status !== google.maps.GeocoderStatus.OK) {
+                            alert(status);
+                        }
+                        // This is checking to see if the Geoeode Status is OK before proceeding
+                        if (status == google.maps.GeocoderStatus.OK) {
+                            console.log(results);
+                            var address = (results[0].formatted_address);
+                            console.log(address);
+                            $(selec).text(address);
+                        }
+                    });
                 }
 
 
 
+                //se llama cuando apreto  "boton-aplicar-filtros" (cuando los filtros sin visibles).
+                //se deberia implementar un ajax que pida al servidor los filtros que aplicó el usuario 
                 function filtrar(){
                     var combo = $("#combo-aspectos").val();
                     var fecha_desde = $("#fecha-desde").val();
@@ -292,6 +313,9 @@
 
                 
                 
+
+                //muestra en la tabla solo los eventos.
+                //muestra en el mapa solo los eventos.
                 function mostrarEventos(){
                     @foreach($eventos as $evento)
                                 var tabla = `
@@ -309,7 +333,7 @@
                                                             </td>
                                                             <td>{{$evento->created_at}}</td>
                                                             <td style="align:justify;">
-                                                                <button id="boton-filtrar-evento-{{$evento->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id)" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
+                                                                <button id="boton-filtrar-evento-{{$evento->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id,{{$evento->latitud}},{{$evento->longitud}})" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
                                                                 <button id="boton-localizar-evento-{{$evento->id}}" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" title="Localizar en el mapa" onclick="localizarAspectoMapa({{$evento}})"> <img src="img/localizar.png" height="18" width="18"></button>
                                                                 <button id="boton-eliminar-evento-{{$evento->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento" onclick="eliminar({{$evento}})"> <img src="img/eliminar.png" height="18" width="18"></button>
                                                             </td>
@@ -317,12 +341,11 @@
                                                         <tr>
                                                             <td id="datos-evento-{{$evento->id}}" colspan="5" class="collapse">
                                                                 <div>
-                                                                    Fecha de Ocurrencia: {{$evento->fecha_ocurrencia}} <br>  
-                                                                    Descripción: {{$evento->descripcion}} <br> 
-                                                                    Latitud: {{$evento->latitud}} <br> 
-                                                                    Longitud: {{$evento->longitud}} <br>
-                                                                    Denunciante: {{$evento->denunciante_id}} <br>
-                                                                    Fecha en que fue registrado en el Sistema: {{$evento->created_at}} <br>
+                                                                <b>Fecha de Ocurrencia:</b> {{$evento->fecha_ocurrencia}} <br>  
+                                                                <b>Descripción:</b> {{$evento->descripcion}} <br> 
+                                                                <b>Dirección: </b><span id="direccion-{{$evento->id}}"></span> <br>
+                                                                <b>Denunciante:</b> {{$evento->denunciante_id}} <br>
+                                                                <b>Fecha en que fue registrado en el Sistema:</b> {{$evento->created_at}} <br>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -334,7 +357,8 @@
                         
                                                     
                     @endforeach
-                                                
+                    
+                    agregarMarkersEventos(true);                            
                                                 
                                                
                 }
@@ -342,7 +366,8 @@
 
 
 
-
+                //muestra en la tabla solo los estados.
+                //muestra en el mapa solo los estados.
                 function mostrarEstados(){
                     @foreach($estados as $estado)
                                 var tabla = `
@@ -360,7 +385,7 @@
                                                 </td>
                                                 <td>{{$estado->created_at}}</td>
                                                 <td style="align:justify;">
-                                                    <button id="boton-filtrar-estado-{{$estado->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id)" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
+                                                    <button id="boton-filtrar-estado-{{$estado->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id,{{$estado->latitud}},{{$estado->longitud}})" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
                                                     <button id="boton-localizar-evento-{{$evento->id}}" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" title="Localizar en el mapa" onclick="localizarAspectoMapa({{$estado}})"> <img src="img/localizar.png" height="18" width="18"></button>
                                                     <button id="boton-solucionar-estado-{{$estado->id}}" type="button" class="btn btn-success btn-sm" data-toggle="tooltip" title="@if($estado->solucionado === 1) Ya esta solucionado @else Solucionar este elemento @endif" @if($estado->solucionado === 1) disabled @endif > <img src="img/solucionar.png" height="18" width="18"></button>
                                                     <button id="boton-eliminar-estado-{{$estado->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento" onclick="eliminar({{$estado}})"> <img src="img/eliminar.png" height="18" width="18"></button>
@@ -369,13 +394,12 @@
                                             <tr>
                                                 <td id="datos-estado-{{$estado->id}}" colspan="5" class="collapse">
                                                     <div>
-                                                        Fecha en que Sucedió: {{$estado->fecha}} <br>  
-                                                        Descripción: {{$estado->descripcion}} <br> 
-                                                        Latitud: {{$estado->latitud}} <br> 
-                                                        Longitud: {{$estado->longitud}} <br>
-                                                        Denunciante: {{$estado->denunciante_id}} <br>
-                                                        Fecha en que fue registrado en el Sistema: {{$estado->created_at}} <br>
-                                                        Solucionado: @if($estado->solucionado === 0)
+                                                        <b>Fecha en que Sucedió:</b> {{$estado->fecha}} <br>  
+                                                        <b>Descripción:</b> {{$estado->descripcion}} <br> 
+                                                        <b>Dirección: </b><span id="direccion-{{$estado->id}}"></span> <br>
+                                                        <b>Denunciante:</b> {{$estado->denunciante_id}} <br>
+                                                        <b>Fecha en que fue registrado en el Sistema:</b> {{$estado->created_at}} <br>
+                                                        <b>Solucionado:</b> @if($estado->solucionado === 0)
                                                                             No
                                                                      @else
                                                                             Si
@@ -391,35 +415,45 @@
                         
                                                     
                     @endforeach
-                                                
+                    
+                    agregarMarkersEstados(true);             
                                                 
                                                
                 }
 
 
 
-
+                //muestra en la tabla todos los eventos y todos los estados.
+                //muestra en el mapa todos los eventos y todos los estados.
                 function mostrarTodo(){
                     mostrarEventos();
                     mostrarEstados();
+                    agregarMarkersTodos();
                 }
 
 
-
+                //se invoca cuando apreto el boton eliminar que esta en la tabla.
+                //recibe como parametro un objeto javascript que representa un evento o un estado.
+                //por lo tanto, si quiero obtener el id de ese evento/estado hago aspectoEliminar['id'], 
+                //y asi con el resto de los atributos.
+                //Debe mostrar un modal para confirmar si desea eliminar o no.
+                //La llamada ajax no se hace aca, se hace en el modal.
                 function eliminar(aspectoEliminar){
                         console.log("Voy a eliminar a: " + aspectoEliminar);
                         for(var key in aspectoEliminar) {
                             var value = aspectoEliminar[key];
                             console.log(value);
                         }
-                        //aca seteo al modal a monopla los valores del evento/estado recibido                       
+                        //aca seteo al modal a monopla los valores del evento/estado recibido.                      
                         $('#titulo-modal').text('Hola');
                         $('#texto-modal').text('chau');
                         $('#myModal').show();
-                        
                 }
 
                 
+                //se invoca cuando apreto el boton "localizar" que esta en la tabla.
+                //lo que hace es centrar el mapa en la lat y long dada por el aspecto pasado como parámetro,
+                //y luego se hace una animacion que pasa el foco desde la tabla al mapa para que quede copado.
                 function localizarAspectoMapa(aspecto){
                         //recorro  para obtener latitud y longitud
                         //luego funcionalidad mapa
@@ -439,44 +473,34 @@
 
 
 
+        /****************** FUNCIONALIDAD DE MAPAS CON GMAPS.JS *****************************/
 
+            var map;      
 
-
-
-
-
-
-
-
-
-
-                    /*   LEEEME     ---> LINKS COPADOS    
-                --------------------------------------
-                
-                    https://pepsized.com/customize-your-google-map-markers/
-                     https://www.sitepoint.com/google-maps-made-easy-with-gmaps-js/
-                */
-                $(function() {
-                   ver_mapa();
-                   //localizame();
-                   //agregarMarkers();
-                });
-                       
-       var map;
+            //Esto es document.ready: cuando se carga la pagina se carga el mapa con TODOS LOS MARCADORES (es decir, todos los aspectos).
+            $(function() {
+                ver_mapa();
+            });
+                        
+    
+           //crea el mapa, lo asocia al div "map", y centra el mapa en Trelew, especificamente en Plaza Independencia.
+           //Ademas, agrega todos los marcadores existentes
+           //y un marcador especifico que indica donde estoy actualmente.
            function ver_mapa(){
                 map = new GMaps({
                     el: '#map',
                     lat: -43.253203,
                     lng: -65.309628,
                 });
-
+                
+                agregarMarkersTodos();
                 agregarMarkersUbicacionActual();
-                agregarMarkers();
             }  
 
 
-             
-            
+            //se invoca cuando apreto el "boton ubicarme" que esta en la tabla "Leyenda".
+            //lo que hace es geolocalización: Gmaps me dice donde estoy y me ubica en el mapa.
+            //tiene animación: el div del mapa toma el foco.
             function localizame(){
                 GMaps.geolocate({
                     success: function(position) {
@@ -498,6 +522,7 @@
                 });
             }
 
+            //Agrega un marcador al mapa en la posición donde me encuentro.
             function agregarMarkersUbicacionActual(){
                 GMaps.geolocate({
                     success: function(position) {
@@ -532,27 +557,14 @@
                 });
             }
 
-
+            /* Si recibe true, significa que fue invocada por el filtro, entonces muestra en el mapa solo los eventos */
+            /* de lo contrario, si es false, al mapa le agrego los eventos y  no elimino ningun marker */
             function agregarMarkersEventos(filtro_activo){
                 var markers_data = [];
                 if(filtro_activo){
                     map.removeMarkers();
                 }
-                
-
-            }
-
-            function agregarMarkers(){
-                //var locations = [-43.427356410238114,-65.29729677304687,-43.27218925427647,-65.29485059842528,-43.27637619494724,-65.29158903226318 ];
-                var markers_data = [];
-                
-
-
                 @foreach($eventos as $evento)
-                
-                        
-
-
                         @foreach($categorias as $categoria)
                             @if($categoria->id === $evento->categoria_id)
                                 var icon = {
@@ -568,8 +580,8 @@
                                     title : "{{$categoria->nombre}}",
                                     infoWindow: {
                                         content: `<div> 
+                                                    <b> Descripción: {{$evento->descripcion}} </b> <br> 
                                                     Fecha de Ocurrencia: {{$evento->fecha_ocurrencia}} <br>  
-                                                    Descripción: {{$evento->descripcion}} <br> 
                                                     Denunciante: {{$evento->denunciante_id}} <br>
                                                     Fecha en que fue registrado en el Sistema: {{$evento->created_at}} <br>
                                                 </div>`  
@@ -579,9 +591,20 @@
                                 @break
                             @endif
                         @endforeach
-
                 @endforeach
-                
+
+                map.addMarkers(markers_data);
+                agregarMarkersUbicacionActual();
+            }
+
+
+            /* Si recibe true, significa que fue invocada por el filtro, entonces muestra en el mapa solo los estados */
+            /* de lo contrario, si es false, al mapa le agrego los estados y  no elimino ningun marker de evento */
+            function agregarMarkersEstados(filtro_activo){
+                var markers_data = [];
+                if(filtro_activo){
+                    map.removeMarkers();
+                }
                 
                 @foreach($estados as $estado)
                 
@@ -600,8 +623,8 @@
                                     title : "{{$categoria->nombre}}",
                                     infoWindow: {
                                         content: `<div> 
+                                                    <b> Descripción: {{$estado->descripcion}} </b> <br> 
                                                     Fecha en que Sucedió: {{$estado->fecha}} <br>  
-                                                    Descripción: {{$estado->descripcion}} <br> 
                                                     Denunciante: {{$estado->denunciante_id}} <br>
                                                     Fecha en que fue registrado en el Sistema: {{$estado->created_at}} <br>
                                                     Solucionado: @if($estado->solucionado === 0)
@@ -619,15 +642,18 @@
 
                 @endforeach
 
-
-                console.log("marcadores: " + markers_data);
                 map.addMarkers(markers_data);
-                      
+                agregarMarkersUbicacionActual();
             }
 
 
 
-
+            //Agrega al mapa todos los marcadores (eventos, estados y mi ubicacion actual).
+            function agregarMarkersTodos(){
+                    agregarMarkersEventos(false);
+                    agregarMarkersEstados(false);
+                    agregarMarkersUbicacionActual();
+            }
 
            
         </script>

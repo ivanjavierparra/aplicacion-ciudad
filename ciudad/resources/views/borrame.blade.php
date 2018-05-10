@@ -127,6 +127,46 @@ console.log( latitude + ', ' + longitude );
 
 
 
+
+
+$("#filtros").toggle();
+
+
+
+
+
+
+
+
+
+/*  Código para Hacer un Ajax para reverse_geocoding directo sin impleemntar la api de google:
+
+
+
+/* $.ajax({url: "http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lon+"&sensor=true", success: function(result){
+                        var selec = "#direccion-"+thenum;
+                        
+                        var lista;
+                        for(var key in result) {
+                            lista = result[key];
+                            console.log(lista);
+                            break;
+                        }
+                        
+                        var valor;
+
+                        for(var key in lista) {
+                            valor = lista[key];
+                            console.log(valor);
+                            break;
+                        }    
+
+                        $(selec).text(valor['formatted_address']);
+                    }});*/
+
+
+*/
+
 </script>
 
 </body>

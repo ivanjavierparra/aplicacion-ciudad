@@ -117,3 +117,50 @@
                         });*/
 
 
+
+
+
+
+
+                        var tabla = `
+                                                
+                                                    
+                                            <tr>
+                                                <td>
+                                                @foreach($categorias as $categoria)
+                                                    @if($estado->categoria_id === $categoria->id)
+                                                        {{$categoria->nombre}}
+                                                        @break
+                                                    @endif
+                                                @endforeach    
+                                                </td>
+                                                <td>{{$estado->created_at}}</td>
+                                                <td style="align:justify;">
+                                                    <button id="boton-filtrar-estado-{{$estado->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id)" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
+                                                    <button id="boton-localizar-evento-{{$evento->id}}" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" title="Localizar en el mapa" onclick="localizarAspectoMapa({{$estado}})"> <img src="img/localizar.png" height="18" width="18"></button>
+                                                    <button id="boton-solucionar-estado-{{$estado->id}}" type="button" class="btn btn-success btn-sm" data-toggle="tooltip" title="@if($estado->solucionado === 1) Ya esta solucionado @else Solucionar este elemento @endif" @if($estado->solucionado === 1) disabled @endif > <img src="img/solucionar.png" height="18" width="18"></button>
+                                                    <button id="boton-eliminar-estado-{{$estado->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento" onclick="eliminar({{$estado}})"> <img src="img/eliminar.png" height="18" width="18"></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td id="datos-estado-{{$estado->id}}" colspan="5" class="collapse">
+                                                    <div>
+                                                        Fecha en que Sucedió: {{$estado->fecha}} <br>  
+                                                        Descripción: {{$estado->descripcion}} <br> 
+                                                        Latitud: {{$estado->latitud}} <br> 
+                                                        Longitud: {{$estado->longitud}} <br>
+                                                        Denunciante: {{$estado->denunciante_id}} <br>
+                                                        Fecha en que fue registrado en el Sistema: {{$estado->created_at}} <br>
+                                                        Solucionado: @if($estado->solucionado === 0)
+                                                                            No Solucionado
+                                                                     @else
+                                                                            Solucionado
+                                                                     @endif
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                                    
+                                                
+                                            `;
+
+
