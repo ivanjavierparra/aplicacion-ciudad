@@ -1,13 +1,13 @@
 @extends('layouts.base')
 
 @section('content')
-        <div id="titulo_principal">
+        <div id="titulo_principal_info">
             <h1 class="my-4" style="text-align:center;">Aplicación para el ciudadano</h1> 
         </div>
-        <div id="titulo_secundario">
+        <div id="titulo_secundario_info">
             <h2 class="my-4" style="text-align:center;">Mapa de Aspectos</h2> 
         </div>
-        <div class="row justify-content-center">
+        <div class="row justify-content-center" id="info-mapa">
             <div id="map" class="col-lg-8 col-md-8 col-sm-8 col-xs-8" style="border:groove;margin-bottom:10px;">
                 <!--<div id="map" style="border:groove;" ></div>-->
             </div>
@@ -16,7 +16,7 @@
                     <table class="table table-bordered table-sm">
                         <thead class="thead-dark">
                             <tr>
-                                <th>Leyenda</th>
+                                <th>Leyenda <button id="boton-filtrar" type="button" class="btn btn btn-sm float-right" onclick="localizame()"> <img src="img/localizar.png" height="18" width="18" data-toggle="tooltip" title="Me ubica en el mapa"></button></th>
                             </tr>    
                         </thead>
                         <tbody>
@@ -25,6 +25,9 @@
                                     <td><img src="{{$categoria->icono}}" height="18" width="18"> {{$categoria->nombre}}</td>
                                 </tr>
                             @endforeach
+                            <tr>
+                                    <td><img src="img/homero.png" height="18" width="18"> Mi Ubicación</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -117,6 +120,7 @@
                                                 <td>
                                                 @foreach($categorias as $categoria)
                                                     @if($evento->categoria_id === $categoria->id)
+                                                        <img src="{{$categoria->icono}}" height="18" width="18">
                                                         {{$categoria->nombre}}
                                                         @break
                                                     @endif
@@ -125,7 +129,8 @@
                                                 <td>{{$evento->created_at}}</td>
                                                 <td style="align:justify;">
                                                     <button id="boton-filtrar-evento-{{$evento->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id)" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
-                                                    <button id="boton-eliminar-evento-{{$evento->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento" onclick="eliminar({{$aspectoEliminar = $evento}})"> <img src="img/eliminar.png" height="18" width="18"></button>
+                                                    <button id="boton-localizar-evento-{{$evento->id}}" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" title="Localizar en el mapa" onclick="localizarAspectoMapa({{$evento}})"> <img src="img/localizar.png" height="18" width="18"></button>
+                                                    <button id="boton-eliminar-evento-{{$evento->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento" onclick="eliminar({{$evento}})"> <img src="img/eliminar.png" height="18" width="18"></button>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -146,6 +151,7 @@
                                                 <td>
                                                 @foreach($categorias as $categoria)
                                                     @if($estado->categoria_id === $categoria->id)
+                                                        <img src="{{$categoria->icono}}" height="18" width="18">
                                                         {{$categoria->nombre}}
                                                         @break
                                                     @endif
@@ -154,8 +160,9 @@
                                                 <td>{{$estado->created_at}}</td>
                                                 <td style="align:justify;">
                                                     <button id="boton-filtrar-estado-{{$estado->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id)" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
+                                                    <button id="boton-localizar-evento-{{$evento->id}}" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" title="Localizar en el mapa" onclick="localizarAspectoMapa({{$estado}})"> <img src="img/localizar.png" height="18" width="18"></button>
                                                     <button id="boton-solucionar-estado-{{$estado->id}}" type="button" class="btn btn-success btn-sm" data-toggle="tooltip" title="@if($estado->solucionado === 1) Ya esta solucionado @else Solucionar este elemento @endif" @if($estado->solucionado === 1) disabled @endif > <img src="img/solucionar.png" height="18" width="18"></button>
-                                                    <button id="boton-eliminar-estado-{{$estado->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento"> <img src="img/eliminar.png" height="18" width="18"></button>
+                                                    <button id="boton-eliminar-estado-{{$estado->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento" onclick="eliminar({{$estado}})"> <img src="img/eliminar.png" height="18" width="18"></button>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -168,9 +175,9 @@
                                                         Denunciante: {{$estado->denunciante_id}} <br>
                                                         Fecha en que fue registrado en el Sistema: {{$estado->created_at}} <br>
                                                         Solucionado: @if($estado->solucionado === 0)
-                                                                            No Solucionado
+                                                                            No
                                                                      @else
-                                                                            Solucionado
+                                                                            Si
                                                                      @endif
                                                     </div>
                                                 </td>
@@ -213,7 +220,7 @@
             </div>
             <div class="modal-body">
                 <p id="texto-modal">Modal body text goes here.</p>
-                <p>@if(!empty($aspectoEliminar) > 0){{$aspectoEliminar}}@endif</p>
+                <p>Aca debe setear a manopla los valores del evento/estado que se encuentran en la function elimnar()</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary">Aceptar</button>
@@ -259,39 +266,28 @@
                     $(selector).toggle();
                 }
 
+
+
                 function filtrar(){
                     var combo = $("#combo-aspectos").val();
                     var fecha_desde = $("#fecha-desde").val();
                     var fecha_hasta = $("#fecha-hasta").val();
-<<<<<<< HEAD
-                    console.log(combo);
-                    console.log(fecha_desde);
-                    console.log(fecha_hasta);
                     $("#body-tabla").empty();
-
-
-                    
-                   
-
+                  //  $.ajax({url: "demo_test.txt", success: function(result){
+                    //    $("#div1").html(result);
+                    //}});    
 
                     switch(combo){
-                        case 'todos':
-                            mostrarTodo();
-                            break;
-                        case 'eventos':
-                            mostrarEventos();
-                            break;
-                        case 'estados':
-                             mostrarEstados();
-                            break;
-                    }
-
-=======
->>>>>>> d5ec5fa065b306bab76774c14aa6e410146640a2
-                    
-                    $.ajax({url: "demo_test.txt", success: function(result){
-                        $("#div1").html(result);
-                    }});                    
+                            case 'todos':
+                                mostrarTodo();
+                                break;
+                            case 'eventos':
+                                mostrarEventos();
+                                break;
+                            case 'estados':
+                                mostrarEstados();
+                                break;
+                    }                
                 }
 
                 
@@ -305,6 +301,7 @@
                                                             <td>
                                                                 @foreach($categorias as $categoria)
                                                                     @if($evento->categoria_id === $categoria->id)
+                                                                        <img src="{{$categoria->icono}}" height="18" width="18">
                                                                         {{$categoria->nombre}}
                                                                         @break
                                                                     @endif
@@ -313,7 +310,8 @@
                                                             <td>{{$evento->created_at}}</td>
                                                             <td style="align:justify;">
                                                                 <button id="boton-filtrar-evento-{{$evento->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id)" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
-                                                                <button id="boton-eliminar-evento-{{$evento->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento"> <img src="img/eliminar.png" height="18" width="18"></button>
+                                                                <button id="boton-localizar-evento-{{$evento->id}}" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" title="Localizar en el mapa" onclick="localizarAspectoMapa({{$evento}})"> <img src="img/localizar.png" height="18" width="18"></button>
+                                                                <button id="boton-eliminar-evento-{{$evento->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento" onclick="eliminar({{$evento}})"> <img src="img/eliminar.png" height="18" width="18"></button>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -354,6 +352,7 @@
                                                 <td>
                                                 @foreach($categorias as $categoria)
                                                     @if($estado->categoria_id === $categoria->id)
+                                                        <img src="{{$categoria->icono}}" height="18" width="18">
                                                         {{$categoria->nombre}}
                                                         @break
                                                     @endif
@@ -362,8 +361,9 @@
                                                 <td>{{$estado->created_at}}</td>
                                                 <td style="align:justify;">
                                                     <button id="boton-filtrar-estado-{{$estado->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id)" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
+                                                    <button id="boton-localizar-evento-{{$evento->id}}" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" title="Localizar en el mapa" onclick="localizarAspectoMapa({{$estado}})"> <img src="img/localizar.png" height="18" width="18"></button>
                                                     <button id="boton-solucionar-estado-{{$estado->id}}" type="button" class="btn btn-success btn-sm" data-toggle="tooltip" title="@if($estado->solucionado === 1) Ya esta solucionado @else Solucionar este elemento @endif" @if($estado->solucionado === 1) disabled @endif > <img src="img/solucionar.png" height="18" width="18"></button>
-                                                    <button id="boton-eliminar-estado-{{$estado->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento"> <img src="img/eliminar.png" height="18" width="18"></button>
+                                                    <button id="boton-eliminar-estado-{{$estado->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento" onclick="eliminar({{$estado}})"> <img src="img/eliminar.png" height="18" width="18"></button>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -376,9 +376,9 @@
                                                         Denunciante: {{$estado->denunciante_id}} <br>
                                                         Fecha en que fue registrado en el Sistema: {{$estado->created_at}} <br>
                                                         Solucionado: @if($estado->solucionado === 0)
-                                                                            No Solucionado
+                                                                            No
                                                                      @else
-                                                                            Solucionado
+                                                                            Si
                                                                      @endif
                                                     </div>
                                                 </td>
@@ -406,16 +406,34 @@
 
 
 
-                function eliminar(id){
-                        console.log(id);
-                        
+                function eliminar(aspectoEliminar){
+                        console.log("Voy a eliminar a: " + aspectoEliminar);
+                        for(var key in aspectoEliminar) {
+                            var value = aspectoEliminar[key];
+                            console.log(value);
+                        }
+                        //aca seteo al modal a monopla los valores del evento/estado recibido                       
                         $('#titulo-modal').text('Hola');
                         $('#texto-modal').text('chau');
-                        $('#myModal').show(id);
+                        $('#myModal').show();
                         
                 }
 
-
+                
+                function localizarAspectoMapa(aspecto){
+                        //recorro  para obtener latitud y longitud
+                        //luego funcionalidad mapa
+                        //for(var key in aspecto) {
+                            var latitud = aspecto['latitud'];
+                            var longitud = aspecto['longitud'];
+                            map.setCenter(latitud, longitud);
+                            //window.location.hash = '#info-mapa';
+                            //$("#map").focus(false);
+                            $('html, body').animate({
+                                scrollTop: $("#titulo_principal_info").offset().top
+                            }, 2000);
+                        //}
+                }
 
 
 
@@ -448,56 +466,59 @@
            function ver_mapa(){
                 map = new GMaps({
                     el: '#map',
-                    lat: -12.043333,
-                    lng: -77.028333,
-                    click: function(event) {
-
-                        //cada vez que hago click, obtengo latitud y longitud.
-                        var lat = event.latLng.lat();
-                        var lng = event.latLng.lng();
-
-                        console.log(lat + " " + lng);
-
-                        //creo un marker
-
-                        map.addMarker({
-                            lat: lat,
-                            lng: lng,
-                            title: 'hola',
-                            infoWindow: {
-                                content : 'hola'
-                            }
-                        });
-
-                       // alert('click');
-
-                    },
+                    lat: -43.253203,
+                    lng: -65.309628,
                 });
-                localizame();
+
+                agregarMarkersUbicacionActual();
                 agregarMarkers();
             }  
+
+
+             
             
             function localizame(){
                 GMaps.geolocate({
                     success: function(position) {
                         map.setCenter(position.coords.latitude, position.coords.longitude);
+                        $('html, body').animate({
+                                scrollTop: $("#titulo_principal_info").offset().top
+                            }, 2000);
                        
-                                            
-                        map.addMarker({
-                                lat: position.coords.latitude,
-                                lng: position.coords.longitude,
-                                title: 'Ubicacion Actual',
-                                icon: 'img/1.png',
-                                infoWindow: {
-                                    content: '<p>HTML Content</p>'
+                    },
+                    error: function(error) {
+                        alert('Geolocation failed: '+error.message);
+                    },
+                    not_supported: function() {
+                        alert("Your browser does not support geolocation");
+                    },
+                    always: function() {
+                       // alert("Done!");
+                    }
+                });
+            }
+
+            function agregarMarkersUbicacionActual(){
+                GMaps.geolocate({
+                    success: function(position) {
+                        var markers_data = [];
+                        var icon = {
+                                    url: '{{ asset("img/homero.png") }}', // url
+                                    scaledSize: new google.maps.Size(32, 32), // scaled size
+                                    origin: new google.maps.Point(0,0), // origin
+                                    anchor: new google.maps.Point(0, 0) // anchor
+                                };
+
+                                markers_data.push({
+                                    lat : position.coords.latitude,
+                                    lng : position.coords.longitude,
+                                    title : "Usted está aquí",
+                                    infoWindow: {
+                                    content: '<p>Usted está aquí</p>'
                                 },
-                                click: function(e) {
-                                    console.log(position.coords.latitude + " *** " + position.coords.longitude );                                
-                                    //alert('You clicked in this marker');
-                                    
-                                }
-                        });
-                        //
+                                    icon : icon
+                                });
+                        map.addMarkers(markers_data);
                     },
                     error: function(error) {
                         alert('Geolocation failed: '+error.message);
@@ -512,14 +533,26 @@
             }
 
 
+            function agregarMarkersEventos(filtro_activo){
+                var markers_data = [];
+                if(filtro_activo){
+                    map.removeMarkers();
+                }
+                
+
+            }
+
             function agregarMarkers(){
-                var locations = [-43.427356410238114,-65.29729677304687,-43.27218925427647,-65.29485059842528,-43.27637619494724,-65.29158903226318 ];
-                markers_data = [];
+                //var locations = [-43.427356410238114,-65.29729677304687,-43.27218925427647,-65.29485059842528,-43.27637619494724,-65.29158903226318 ];
+                var markers_data = [];
                 
 
 
                 @foreach($eventos as $evento)
                 
+                        
+
+
                         @foreach($categorias as $categoria)
                             @if($categoria->id === $evento->categoria_id)
                                 var icon = {
@@ -532,7 +565,15 @@
                                 markers_data.push({
                                     lat : '{{$evento->latitud}}',
                                     lng :'{{$evento->longitud}}',
-                                    title : "buenas",
+                                    title : "{{$categoria->nombre}}",
+                                    infoWindow: {
+                                        content: `<div> 
+                                                    Fecha de Ocurrencia: {{$evento->fecha_ocurrencia}} <br>  
+                                                    Descripción: {{$evento->descripcion}} <br> 
+                                                    Denunciante: {{$evento->denunciante_id}} <br>
+                                                    Fecha en que fue registrado en el Sistema: {{$evento->created_at}} <br>
+                                                </div>`  
+                                    },
                                     icon : icon
                                 });
                                 @break
@@ -556,7 +597,20 @@
                                 markers_data.push({
                                     lat : '{{$estado->latitud}}',
                                     lng :'{{$estado->longitud}}',
-                                    title : "buenas",
+                                    title : "{{$categoria->nombre}}",
+                                    infoWindow: {
+                                        content: `<div> 
+                                                    Fecha en que Sucedió: {{$estado->fecha}} <br>  
+                                                    Descripción: {{$estado->descripcion}} <br> 
+                                                    Denunciante: {{$estado->denunciante_id}} <br>
+                                                    Fecha en que fue registrado en el Sistema: {{$estado->created_at}} <br>
+                                                    Solucionado: @if($estado->solucionado === 0)
+                                                                        No
+                                                                    @else
+                                                                        Si
+                                                                    @endif
+                                                </div>`  
+                                    },
                                     icon : icon
                                 });
                                 @break
@@ -572,16 +626,6 @@
             }
 
 
-/*map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 8
-        });           
-           //Add listener
-google.maps.event.addListener(map, "click", function (event) {
-    var latitude = event.latLng.lat();
-    var longitude = event.latLng.lng();
-    console.log( latitude + ', ' + longitude );
-}); //end addListener*/
 
 
 
