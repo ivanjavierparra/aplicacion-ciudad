@@ -228,7 +228,7 @@
           
       
           
-         
+                
 
                
            
@@ -263,35 +263,21 @@
                     var combo = $("#combo-aspectos").val();
                     var fecha_desde = $("#fecha-desde").val();
                     var fecha_hasta = $("#fecha-hasta").val();
-<<<<<<< HEAD
-                    console.log(combo);
-                    console.log(fecha_desde);
-                    console.log(fecha_hasta);
-                    $("#body-tabla").empty();
-
-
                     
-                   
+                    var id = 12; // A random variable for this example
 
-
-                    switch(combo){
-                        case 'todos':
-                            mostrarTodo();
-                            break;
-                        case 'eventos':
-                            mostrarEventos();
-                            break;
-                        case 'estados':
-                             mostrarEstados();
-                            break;
-                    }
-
-=======
->>>>>>> d5ec5fa065b306bab76774c14aa6e410146640a2
-                    
-                    $.ajax({url: "demo_test.txt", success: function(result){
-                        $("#div1").html(result);
-                    }});                    
+                    $.ajax({
+                        method: 'POST', // Type of response and matches what we said in the route
+                        url: '/filtrar', // This is the url we gave in the route
+                        data: {'id' : id}, // a JSON object to send back
+                        success: function(response){ // What to do if we succeed
+                            console.log(response); 
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
+                            console.log(JSON.stringify(jqXHR));
+                            console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                        }
+                    });
                 }
 
                 
@@ -513,62 +499,27 @@
 
 
             function agregarMarkers(){
-                var locations = [-43.427356410238114,-65.29729677304687,-43.27218925427647,-65.29485059842528,-43.27637619494724,-65.29158903226318 ];
-                markers_data = [];
-                
-
-
-                @foreach($eventos as $evento)
-                
-                        @foreach($categorias as $categoria)
-                            @if($categoria->id === $evento->categoria_id)
-                                var icon = {
-                                    url: '{{ asset("$categoria->icono") }}', // url
-                                    scaledSize: new google.maps.Size(32, 32), // scaled size
-                                    origin: new google.maps.Point(0,0), // origin
-                                    anchor: new google.maps.Point(0, 0) // anchor
-                                };
-
-                                markers_data.push({
-                                    lat : '{{$evento->latitud}}',
-                                    lng :'{{$evento->longitud}}',
-                                    title : "buenas",
-                                    icon : icon
-                                });
-                                @break
-                            @endif
-                        @endforeach
-
-                @endforeach
-                
-                
-                @foreach($estados as $estado)
-                
-                        @foreach($categorias as $categoria)
-                            @if($categoria->id === $estado->categoria_id)
-                                var icon = {
-                                    url: '{{ asset("$categoria->icono") }}', // url
-                                    scaledSize: new google.maps.Size(32, 32), // scaled size
-                                    origin: new google.maps.Point(0,0), // origin
-                                    anchor: new google.maps.Point(0, 0) // anchor
-                                };
-
-                                markers_data.push({
-                                    lat : '{{$estado->latitud}}',
-                                    lng :'{{$estado->longitud}}',
-                                    title : "buenas",
-                                    icon : icon
-                                });
-                                @break
-                            @endif
-                        @endforeach
-
-                @endforeach
-
-
-                console.log("marcadores: " + markers_data);
-                map.addMarkers(markers_data);
-                      
+                var locations = [-43.273564102381144,-65.29729677304687,-43.27218925427647,-65.29485059842528,-43.27637619494724,-65.29158903226318 ];
+                @for ($i = 0; $i < 6; $i+=2)    
+                    @foreach($categorias as $categoria)    
+                        map.addMarker({
+                                lat: locations[{{$i}}],
+                                lng: locations[{{$i+1}}],
+                                title: 'Ubicacion Actual',
+                                icon: 'img/1.png',
+                                
+                                infoWindow: {
+                                    content: '<p>HTML Content</p>'
+                                },
+                                click: function(e) {
+                                    
+                                    
+                                }
+                        });
+                        @break
+                    @endforeach
+                    @break
+                @endfor
             }
 
 

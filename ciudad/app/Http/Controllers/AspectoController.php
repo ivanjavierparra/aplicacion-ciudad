@@ -98,5 +98,17 @@ class AspectoController extends Controller
         return view('gmaps',['categorias'=>$categorias,'eventos'=>$eventos,'estados'=>$estados]);
     }
 
-
+    /**       
+    * Display a listing of the resource.
+    *
+    * @param  Illuminate\Http\Request $request
+    * @return Response
+    */
+    public function dameAspectos(Request $request)
+    {
+        if($request->ajax()){
+            return response()->json(['response' => 'This is post method']);
+        }
+        return "HTTP";
+    }
 }

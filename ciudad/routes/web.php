@@ -24,7 +24,7 @@ Route::get('/', function () {
 Route::get('/', 'CategoriaController@obtenerCategorias' )->name('inicio');
 Route::get('/aspectos','AspectoController@getCategoriasyAspectos')->name('mapas');
 Route::get('/ajax', 'CategoriaController@dameAjax' );
-
+Route::post('/filtrar', 'AspectoController@dameAspectos');
 
 Route::get('evento/crear/{id?}', 'EventoController@create');
 Route::post('evento/crear', 'EventoController@store');
