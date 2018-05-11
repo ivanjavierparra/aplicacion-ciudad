@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Evento;
 use App\Categoria;
+use App\Denunciante;
 use Illuminate\Http\Request;
 
 class EventoController extends Controller
@@ -40,8 +41,18 @@ class EventoController extends Controller
     {
         $evento = new Evento;
 
-        $evento->nombre = $request->nombre;
-        $evento->icono = $request->icono;
+        
+
+        
+        $evento->fecha = date("Y-m-d H:i:s");
+        $evento->descripcion = $request->descripcion;
+        $evento->latitud = $request->latitud;
+        $evento->longitud = $request->longitud;
+        $evento->categoria_id = Categoria::where('nombre',$request->categoria)->first()->id;
+        $evento->denunciante_id = Denunciante::where('email',$request->denunciante)->first()->id;
+        $evento->fecha_ocurrencia = $request->fecha_ocurrencia;
+        $evento->tipo = $request->tipo;
+        
 
         $evento->save();
     }
