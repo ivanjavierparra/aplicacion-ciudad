@@ -16,7 +16,7 @@
             <input type="datetime-local" name="fecha_ocurrencia" class='form-control' value="2018-06-01T08:30">
         </div>
         <div class="form-group">
-            {{ Form::label('denunciante', 'Denunciante') }}
+            {{ Form::label('denunciante', 'Número de Contacto') }}
             {{ Form::text('denunciante', '', ['class' => 'form-control']) }}
         </div>
         <div class="form-group">
@@ -42,7 +42,12 @@
                 lat: -43.2489500,
                 lng: -65.3050500,
                 click: function(event) {
-                    alert( "Latitud: "+event.latLng.lat()+" "+", longitud: "+event.latLng.lng() );  
+                    map.addMarker({
+                        lat: event.latLng.lat(),
+                        lng: event.latLng.lng(),
+                        title: 'Evento Nuevo',
+                        click: function(e) {}
+                    });
                     $('#lat').val(event.latLng.lat());
                     $('#long').val(event.latLng.lng());
                 }

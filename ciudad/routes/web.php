@@ -29,7 +29,7 @@ Route::post('/filtrar', 'AspectoController@dameAspectos');
 Route::get('evento/crear/{id?}', 'EventoController@create');
 Route::post('evento/crear', 'EventoController@store');
 
-Route::get('estadoobjeto/crear', 'EstadoObjetoController@create');
+Route::get('estadoobjeto/crear/{id?}', 'EstadoObjetoController@create');
 Route::post('estadoobjeto/crear', 'EstadoObjetoController@store');
 
 Route::get('/login', 'UserController@login' )->name('login');

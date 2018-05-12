@@ -6,6 +6,7 @@ use App\Evento;
 use App\Categoria;
 use App\Denunciante;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class EventoController extends Controller
 {
@@ -41,20 +42,24 @@ class EventoController extends Controller
     {
         $evento = new Evento;
 
-        
-
-        
         $evento->fecha = date("Y-m-d H:i:s");
         $evento->descripcion = $request->descripcion;
         $evento->latitud = $request->latitud;
         $evento->longitud = $request->longitud;
         $evento->categoria_id = Categoria::where('nombre',$request->categoria)->first()->id;
-        $evento->denunciante_id = Denunciante::where('email',$request->denunciante)->first()->id;
+        try{
+            $evento->denunciante_id = Denunciante::where('telefono',$request->denunciante)->firstOrFail()->id;
+        }catch (ModelNotFoundException $e){
+            $nuevo_denunciante = new Denunciante;
+            $nuevo_denunciante->telefono = $request->denunciante;
+            $nuevo_denunciante->save();
+            $evento->denunciante_id = $nuevo_denunciante->id;
+        }
+        
         $evento->fecha_ocurrencia = $request->fecha_ocurrencia;
         $evento->tipo = $request->tipo;
-        
-
-        $evento->save();
+        $evento->save();   
+        return redirect('/');
     }
 
     /**
