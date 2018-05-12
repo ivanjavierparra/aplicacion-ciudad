@@ -40,8 +40,11 @@
                                     Opciones
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href=" {{route('login')}}  ">Iniciar Sesión</a>
+                                @if (Auth::check())
                                     <a class="dropdown-item" href="#">Cerrar Sesión</a>
+                                @else
+                                    <a class="dropdown-item" href=" {{route('login')}}">Iniciar Sesión</a>
+                                @endif
                                 </div>
                             </li>
                         </ul>
