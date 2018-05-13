@@ -32,7 +32,7 @@ Route::post('evento/crear', 'EventoController@store');
 Route::get('estadoobjeto/crear/{id?}', 'EstadoObjetoController@create');
 Route::post('estadoobjeto/crear', 'EstadoObjetoController@store');
 
-Route::get('/login', 'UserController@login' )->name('login');
+//Route::get('/login', 'UserController@login' )->name('login');
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
