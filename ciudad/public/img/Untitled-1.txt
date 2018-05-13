@@ -164,3 +164,14 @@
                                             `;
 
 
+formatted_address
+:
+
+
+
+var estado;
+                @foreach($estados as $estado)
+                        estado = '{{$estado}}';
+                        console.log("js con php: " + estado);
+                        @break
+                @endforeach

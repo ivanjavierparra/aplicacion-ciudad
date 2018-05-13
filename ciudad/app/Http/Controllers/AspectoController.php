@@ -89,14 +89,88 @@ class AspectoController extends Controller
     public function getCategoriasyAspectos()
     {
         
-        $categorias = Categoria::getAllCategorias(); 
+        $categorias = Categoria::getAll(); 
         
-        $eventos = Evento::getAllEventos();
+        $eventos = Evento::getAll();
         
-        $estados = EstadoObjeto::getAllEstados();
+        $estados = EstadoObjeto::getAll();
 
-        return view('gmaps',['categorias'=>$categorias,'eventos'=>$eventos,'estados'=>$estados]);
+        return view('gmaps2',['categorias'=>$categorias,'eventos'=>$eventos,'estados'=>$estados]);
     }
 
+
+    public function getAspectosFiltrados(Request $request){
+        $fechahasta = $request->input('fechahasta');
+        $fechadesde = $request->input('fechadesde');
+        $nombre = $request->input('nombre');
+        
+        $valores_aceptados = array("todos", "eventos", "estados");
+        //TODO validar que tengo $nombre
+        if (!in_array($nombre, $valores_aceptados)) {
+            $error = [
+                'result' => 'error',
+            ];
+            return response()->json($error);
+        }
+        
+
+        $tipos = [
+            "todos" => Aspecto::getQuery(),
+            "eventos" => Evento::getQuery(),
+            "estados" => EstadoObjeto::getQuery()
+        ];
+
+        $query = $tipos[$nombre];
+        //mktime()
+        
+        $query->whereDate('aspectos.created_at', '>=',$fechadesde);
+        $query->whereDate('aspectos.created_at', '<=',$fechahasta);
+        $query->select('aspectos.*');
+
+        $data = [
+            'result' => "ok",
+            'objects' => $query->get()
+        ];
+
+        /*$query = Aspecto::all();
+
+        //http://localhost:8000/aspectos/filtrar?nombre=estados&fechadesde=2018-03-11&fechahasta=2018-05-11
+        http://localhost:8000/aspectos/filtrar?nombre=eventos&fechadesde=2018-03-10&fechahasta=2018-06-11
+        $query = Aspecto::where('created_at', ">", $fechadesde);
+      /*  $data = $_GET['nombre'];
+        return response()->json(
+           $data
+       );*/
+       
+       return response()->json($data);
+       
+    }
+
+    public function eliminar(Request $request){
+        
+        Aspecto::eliminar($request->input('id'));
+
+        $data = [
+            'result' => "ok",
+            'objects' => Aspecto::getQuery()->get()
+        ];
+
+       
+        return response()->json($data);
+       
+    }
+
+
+    public function solucionar(Request $request){
+        
+        EstadoObjeto::solucionar($request->input('id'));
+        
+        $data = [
+            'result' => "ok",
+            'objects' => Aspecto::getQuery()->get()
+        ];
+
+        return response()->json($data);
+    }
 
 }

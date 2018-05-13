@@ -160,7 +160,7 @@
                                                 <td style="align:justify;">
                                                     <button id="boton-filtrar-estado-{{$estado->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id,{{$estado->latitud}},{{$estado->longitud}})" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
                                                     <button id="boton-localizar-evento-{{$evento->id}}" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" title="Localizar en el mapa" onclick="localizarAspectoMapa({{$estado}})"> <img src="img/localizar.png" height="18" width="18"></button>
-                                                    <button id="boton-solucionar-estado-{{$estado->id}}" type="button" class="btn btn-success btn-sm" data-toggle="tooltip" title="@if($estado->solucionado === 1) Ya esta solucionado @else Solucionar este elemento @endif" @if($estado->solucionado === 1) disabled @endif > <img src="img/solucionar.png" height="18" width="18"></button>
+                                                    <button id="boton-solucionar-estado-{{$estado->id}}" type="button" class="btn btn-success btn-sm" onclick="solucionar({{$estado}})" data-toggle="tooltip" title="@if($estado->solucionado === 1) Ya esta solucionado @else Solucionar este elemento @endif" @if($estado->solucionado === 1) disabled @endif > <img src="img/solucionar.png" height="18" width="18"></button>
                                                     <button id="boton-eliminar-estado-{{$estado->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento" onclick="eliminar({{$estado}})"> <img src="img/eliminar.png" height="18" width="18"></button>
                                                 </td>
                                             </tr>
@@ -207,28 +207,50 @@
 
 
        <!-- modal eliminar -->
-       <div id="myModal" class="modal" tabindex="-1" role="dialog">
-        <div  class="modal-dialog" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 id="titulo-modal" class="modal-title">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#myModal').modal('toggle');">
-                <span aria-hidden="true">&times;</span>
-                </button>
+       <div id="modalEliminar" class="modal" tabindex="-1" role="dialog">
+            <div  class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 id="titulo-modal" class="modal-title">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#modalEliminar').modal('toggle');">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="texto-modal">Modal body text goes here.</p>
+                        <p>Aca debe setear a manopla los valores del evento/estado que se encuentran en la function elimnar()</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btnEliminarAjax" id="1" onclick="eliminarAjax(this.id)">Aceptar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#modalEliminar').modal('toggle');">Cancelar</button>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-                <p id="texto-modal">Modal body text goes here.</p>
-                <p>Aca debe setear a manopla los valores del evento/estado que se encuentran en la function elimnar()</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Aceptar</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#myModal').modal('toggle');">Cancelar</button>
-            </div>
-            </div>
-        </div>
         </div>
 
-           
+        
+
+        <!-- modal solucionar -->
+       <div id="modalSolucionar" class="modal" tabindex="-1" role="dialog">
+            <div  class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 id="titulo-modal-solucionar" class="modal-title">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="$('#modalSolucionar').modal('toggle');">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="texto-modal-solucionar">Modal body text goes here.</p>
+                        <p>Aca debe setear a manopla los valores del evento/estado que se encuentran en la function elimnar()</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btnSolucionarAjax" id="1" onclick="solucionarAjax(this.id)">Aceptar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#modalSolucionar').modal('toggle');">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
        
           
       
@@ -308,16 +330,105 @@
                             case 'estados':
                                 mostrarEstados();
                                 break;
-                    }                
+                    } 
+
+
+                    
+                  $.ajax({
+                            url: "{{ route('filtrar')}}",
+                            data:  {
+                                nombre:combo,
+                                fechadesde:fecha_desde,
+                                fechahasta:fecha_hasta,
+                            },
+                            dataType: "json",
+                            method: "get",
+                            success: function(result)
+                            {
+                                if (result['result'] == 'ok')
+                                {
+                                        console.log("El ajax me trajo esto: " + result);
+                                        for(var key in result) {
+                                            var value = result[key];
+                                            console.log(value);
+                                        }
+                                        
+                                        var datos = result['objects'];
+                                        var aspecto;
+                                        for(var i=0;i<datos.length;i++){
+                                            //for(var i=0;i<aspecto.length;i++){
+                                                console.log(datos[i]);
+                                                aspecto = datos[i];
+                                                break;
+                                            //}
+                                        }
+                                        console.log("Lo entendi!!!!! " + aspecto['id']);
+                                        
+                                }
+                                else
+                                {
+                                    console.log("El ajax fallo: ");
+                                }
+                            },
+                            fail: function(){
+                                console.log("El ajax fallo: ");
+                            },
+                            beforeSend: function(){
+                                console.log("atenti voy a enviar un ajax. ");
+                            }
+                        });
+
+//                console.log("Sera asincrono? " + datos);
+                       
+
+                         
+                    
+                   
+
                 }
 
                 
+                function armarTabla(aspecto){
+                    var fila = `
+                                <tr>
+                                    <td>
+                                        @foreach($categorias as $categoria)
+                                            @if($evento->categoria_id === $categoria->id)
+                                                <img src="{{$categoria->icono}}" height="18" width="18">
+                                                {{$categoria->nombre}}
+                                                @break
+                                            @endif
+                                        @endforeach
+                                    </td>
+                                    <td>{{$evento->created_at}}</td>
+                                    <td style="align:justify;">
+                                        <button id="boton-filtrar-evento-{{$evento->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id,{{$evento->latitud}},{{$evento->longitud}})" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
+                                        <button id="boton-localizar-evento-{{$evento->id}}" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" title="Localizar en el mapa" onclick="localizarAspectoMapa({{$evento}})"> <img src="img/localizar.png" height="18" width="18"></button>
+                                        <button id="boton-eliminar-evento-{{$evento->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento" onclick="eliminar({{$evento}})"> <img src="img/eliminar.png" height="18" width="18"></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td id="datos-evento-{{$evento->id}}" colspan="5" class="collapse">
+                                        <div>
+                                        <b>Fecha de Ocurrencia:</b> {{$evento->fecha_ocurrencia}} <br>  
+                                        <b>Descripción:</b> {{$evento->descripcion}} <br> 
+                                        <b>Dirección: </b><span id="direccion-{{$evento->id}}"></span> <br>
+                                        <b>Denunciante:</b> {{$evento->denunciante_id}} <br>
+                                        <b>Fecha en que fue registrado en el Sistema:</b> {{$evento->created_at}} <br>
+                                        </div>
+                                    </td>
+                                </tr>       
+                    
+                    `;
+
+                    $('#body-tabla').append(fila);
+                }
                 
 
                 //muestra en la tabla solo los eventos.
                 //muestra en el mapa solo los eventos.
-                function mostrarEventos(){
-                    @foreach($eventos as $evento)
+                function mostrarEventos(aspecto) {
+                    @foreach($eventos as evento)
                                 var tabla = `
                                                 
                                                     
@@ -387,7 +498,7 @@
                                                 <td style="align:justify;">
                                                     <button id="boton-filtrar-estado-{{$estado->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id,{{$estado->latitud}},{{$estado->longitud}})" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
                                                     <button id="boton-localizar-evento-{{$evento->id}}" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" title="Localizar en el mapa" onclick="localizarAspectoMapa({{$estado}})"> <img src="img/localizar.png" height="18" width="18"></button>
-                                                    <button id="boton-solucionar-estado-{{$estado->id}}" type="button" class="btn btn-success btn-sm" data-toggle="tooltip" title="@if($estado->solucionado === 1) Ya esta solucionado @else Solucionar este elemento @endif" @if($estado->solucionado === 1) disabled @endif > <img src="img/solucionar.png" height="18" width="18"></button>
+                                                    <button id="boton-solucionar-estado-{{$estado->id}}" type="button" class="btn btn-success btn-sm" onclick="solucionar({{$estado}})" data-toggle="tooltip" title="@if($estado->solucionado === 1) Ya esta solucionado @else Solucionar este elemento @endif" @if($estado->solucionado === 1) disabled @endif > <img src="img/solucionar.png" height="18" width="18"></button>
                                                     <button id="boton-eliminar-estado-{{$estado->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento" onclick="eliminar({{$estado}})"> <img src="img/eliminar.png" height="18" width="18"></button>
                                                 </td>
                                             </tr>
@@ -447,10 +558,107 @@
                         //aca seteo al modal a monopla los valores del evento/estado recibido.                      
                         $('#titulo-modal').text('Hola');
                         $('#texto-modal').text('chau');
-                        $('#myModal').show();
+                        $('.btnEliminarAjax').attr("id",aspectoEliminar['id']);
+                        $('#modalEliminar').show();
                 }
 
+
+                //funcion que recibe id del aspecto y hace una peticion al servidor para eliminarlo.
+                function eliminarAjax(idAspecto){
+                    $.ajax({
+
+                            url: "{{ route('eliminar')}}",
+                            data:  {
+                                id:idAspecto,
+                                _token: '{{csrf_token()}}'
+                            },
+                            dataType: "json",
+                            method: "post",
+                            success: function(result)
+                            {
+                                if (result['result'] == 'ok')
+                                {
+                                        console.log("El ajax me trajo esto: " + result);
+                                        for(var key in result) {
+                                            var value = result[key];
+                                            console.log(value);
+                                        }
+                                }
+                                else
+                                {
+                                    console.log("El ajax fallo: ");
+                                }
+                            },
+                            fail: function(){
+                                console.log("El ajax fallo: ");
+                            },
+                            beforeSend: function(){
+                                console.log("atenti voy a enviar un ajax. ");
+                            }
+                        });
+                }
                 
+
+
+                //se invoca cuando apreto el boton solucionar que esta en la tabla.
+                //recibe como parametro un objeto javascript que representa un estado.
+                //por lo tanto, si quiero obtener el id de ese estado hago aspectoEliminar['id'], 
+                //y asi con el resto de los atributos.
+                //Debe mostrar un modal para confirmar si desea solucionar o no.
+                //La llamada ajax no se hace aca, se hace en el modal.
+                function solucionar(aspectoSolucionar){
+                        console.log("Voy a eliminar a: " + aspectoSolucionar);
+                        for(var key in aspectoSolucionar) {
+                            var value = aspectoSolucionar[key];
+                            console.log(value);
+                        }
+                        //aca seteo al modal a monopla los valores del evento/estado recibido.                      
+                        $('#titulo-modal-solucionar').text('Hola');
+                        $('#texto-modal-solucionar').text('chau');
+                        $('.btnSolucionarAjax').attr("id",aspectoSolucionar['id']);
+                        $('#modalSolucionar').show();
+                }
+
+
+                //funcion que recibe id del aspecto y hace una peticion al servidor para solucionarlo.
+                function solucionarAjax(idAspecto){
+                    $.ajax({
+                            url: "{{ route('solucionar')}}",
+                            data:  {
+                                id:idAspecto,
+                                _token: '{{csrf_token()}}'
+                            },
+                            dataType: "json",
+                            method: "post",
+                            success: function(result)
+                            {
+                                if (result['result'] == 'ok')
+                                {
+                                        console.log("El ajax me trajo esto: " + result);
+                                        for(var key in result) {
+                                            var value = result[key];
+                                            console.log(value);
+                                        }
+                                }
+                                else
+                                {
+                                    console.log("El ajax fallo: ");
+                                }
+                            },
+                            fail: function(){
+                                console.log("El ajax fallo: ");
+                            },
+                            beforeSend: function(){
+                                console.log("atenti voy a enviar un ajax. ");
+                            }
+                            });
+                }
+
+
+
+
+
+
                 //se invoca cuando apreto el boton "localizar" que esta en la tabla.
                 //lo que hace es centrar el mapa en la lat y long dada por el aspecto pasado como parámetro,
                 //y luego se hace una animacion que pasa el foco desde la tabla al mapa para que quede copado.
@@ -521,7 +729,12 @@
                     }
                 });
 
-                 
+                 var estado;
+                @foreach($estados as $estado)
+                        estado = '{{$estado}}';
+                        console.log("js con php: " + estado);
+                        @break
+                @endforeach
 
             }
 

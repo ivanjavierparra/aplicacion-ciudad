@@ -38,3 +38,6 @@ Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 });
 
+Route::get('/aspectos/filtrar', array('as' => 'filtrar', 'uses' => 'AspectoController@getAspectosFiltrados'));
+Route::post('/aspectos/eliminar', array('as' => 'eliminar', 'uses' => 'AspectoController@eliminar'));
+Route::post('/aspectos/solucionar', array('as' => 'solucionar', 'uses' => 'AspectoController@solucionar'));

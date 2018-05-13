@@ -8,7 +8,7 @@ class Categoria extends Model
 {
     
     
-    public static function getAllCategorias(){
+    public static function getAll(){
         return Categoria::all();
     }
 

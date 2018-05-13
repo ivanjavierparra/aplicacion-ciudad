@@ -12,7 +12,7 @@ class Evento extends Aspecto
 {
     protected $table = 'aspectos';
 
-    public static function getAllEventos(){
+    public static function getAll() {
         $eventos = Evento::all();
         foreach($eventos as $e){
            $id = $e->categoria_id;
@@ -23,6 +23,12 @@ class Evento extends Aspecto
         } 
         
         return $resultado;
+    }
+
+    public static function getQuery() {
+        return DB::table("aspectos")
+            ->join("categorias", "aspectos.categoria_id", "=", "categorias.id")
+            ->where("categorias.tipo", "=", "evento");
     }
 
     public function aspecto()
