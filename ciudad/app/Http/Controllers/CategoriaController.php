@@ -87,13 +87,13 @@ class CategoriaController extends Controller
     public function obtenerCategorias()
     {
         //$c = new Categoria();
-        $categorias = Categoria::getAllCategorias();
+        $categorias = Categoria::getAll();
         return view('prueba',['categorias'=>$categorias]);
     }
 
     
     public function dameAjax(){
-        $categorias = Categoria::getAllCategorias(); //aca deberia obtener los Aspectos y NO las categorias
+        $categorias = Categoria::getAll(); //aca deberia obtener los Aspectos y NO las categorias
         return response()->json(
              $categorias
         );
