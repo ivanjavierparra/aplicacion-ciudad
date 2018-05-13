@@ -10,7 +10,7 @@
 
         <!-- Bootstrap core CSS -->
         <link rel="stylesheet" href={{ asset("css/bootstrap.min.css") }}>
-        <link rel="stylesheet" href={{ asset("css/estilos.css") }}>>
+        <link rel="stylesheet" href={{ asset("css/estilos.css") }}> 
     </head>
 
     <body>
@@ -54,6 +54,7 @@
             <!-- Fin nav -->
         @show
         
+        <br>
         <div class="container">
             @yield('content')
         </div>

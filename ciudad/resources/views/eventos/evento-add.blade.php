@@ -29,18 +29,23 @@
         <button class="btn btn-success" type="submit">Subir un Evento!</button>
     {{ Form::close() }}
     </div>
-
+    
     <script src={{ asset("js/jquery-3.3.1.min.js") }}></script>
-    <script async defer src={{ asset("js/gmaps.js") }} onload="ver_mapa()"></script>
-    <script src={{ asset("js/mapa.js")}}></script>
+    
     <script>
         var map;
         var markers;
         $(function() {
+            ver_mapa();
+            //agregarMarkersTodos();
+        });
+
+        
+        function ver_mapa(){
             map = new GMaps({
                 div: '#map',
-                lat: -43.2489500,
-                lng: -65.3050500,
+                lat: -43.253203,
+                lng: -65.309628,
                 click: function(event) {
                     map.addMarker({
                         lat: event.latLng.lat(),
@@ -52,6 +57,9 @@
                     $('#long').val(event.latLng.lng());
                 }
             });
-        });
+        }
+
+
+
     </script>
 @endsection
