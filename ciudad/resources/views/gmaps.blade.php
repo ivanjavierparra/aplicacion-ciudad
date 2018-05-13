@@ -233,7 +233,7 @@
           
       
           
-         
+                
 
                
            
@@ -293,22 +293,21 @@
                     var combo = $("#combo-aspectos").val();
                     var fecha_desde = $("#fecha-desde").val();
                     var fecha_hasta = $("#fecha-hasta").val();
-                    $("#body-tabla").empty();
-                  //  $.ajax({url: "demo_test.txt", success: function(result){
-                    //    $("#div1").html(result);
-                    //}});    
+                    
+                    var id = 12; // A random variable for this example
 
-                    switch(combo){
-                            case 'todos':
-                                mostrarTodo();
-                                break;
-                            case 'eventos':
-                                mostrarEventos();
-                                break;
-                            case 'estados':
-                                mostrarEstados();
-                                break;
-                    }                
+                    $.ajax({
+                        method: 'POST', // Type of response and matches what we said in the route
+                        url: '/filtrar', // This is the url we gave in the route
+                        data: {'id' : id}, // a JSON object to send back
+                        success: function(response){ // What to do if we succeed
+                            console.log(response); 
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) { // What to do if we fail
+                            console.log(JSON.stringify(jqXHR));
+                            console.log("AJAX error: " + textStatus + ' : ' + errorThrown);
+                        }
+                    });
                 }
 
                 

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\EstadoObjeto;
+use App\Categoria;
+use App\Denunciante;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class EstadoObjetoController extends Controller
 {
@@ -22,10 +25,11 @@ class EstadoObjetoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
         $estado_objeto = new EstadoObjeto;
-        return view('estadoobjeto.estado-objeto-add', ['estado_objeto' => $estado_objeto ]);
+        $categoria = Categoria::getCategoria($id);
+        return view('estadoobjeto.estado-objeto-add', ['estado_objeto' => $estado_objeto, "categoria" => $categoria ]);
     }
 
     /**
@@ -38,10 +42,23 @@ class EstadoObjetoController extends Controller
     {
         $estado_objeto = new EstadoObjeto;
 
-        $estado_objeto->nombre = $request->nombre;
-        $estado_objeto->icono = $request->icono;
+        $estado_objeto->fecha = date("Y-m-d H:i:s");
+        $estado_objeto->descripcion = $request->descripcion;
+        $estado_objeto->latitud = $request->latitud;
+        $estado_objeto->longitud = $request->longitud;
+        $estado_objeto->categoria_id = Categoria::where('nombre',$request->categoria)->first()->id;
+        try{
+            $estado_objeto->denunciante_id = Denunciante::where('telefono',$request->denunciante)->firstOrFail()->id;
+        }catch (ModelNotFoundException $e){
+            $nuevo_denunciante = new Denunciante;
+            $nuevo_denunciante->telefono = $request->denunciante;
+            $nuevo_denunciante->save();
+            $estado_objeto->denunciante_id = $nuevo_denunciante->id;
+        }
+        $estado_objeto->tipo = $request->tipo;
 
         $estado_objeto->save();
+        return redirect('/');
     }
 
     /**
