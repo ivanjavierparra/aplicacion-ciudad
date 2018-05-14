@@ -17,8 +17,8 @@ class CreateAspectosTable extends Migration
             $table->increments('id');
             $table->dateTime('fecha');
             $table->mediumText('descripcion');
-            $table->float('latitud', 15, 3);
-            $table->float('longitud', 15, 3);
+            $table->float('latitud', 40, 20);
+            $table->float('longitud', 40, 20);
             $table->unsignedInteger('categoria_id');
             $table->foreign('categoria_id')->references('id')->on('categorias');
             $table->unsignedInteger('denunciante_id');

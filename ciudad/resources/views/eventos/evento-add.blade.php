@@ -17,15 +17,17 @@
         </div>
         <div class="form-group">
             {{ Form::label('denunciante', 'Número de Contacto') }}
-            {{ Form::text('denunciante', '', ['class' => 'form-control']) }}
+            {{ Form::text('denunciante', '', ['class' => 'form-control', 'required' => 'required']) }}
         </div>
         <div class="form-group">
-            {{ Form::hidden('latitud', 'Latitud', ['id'=>'lat']) }}
-            {{ Form::hidden('longitud', 'Longitud', ['id'=>'long']) }}
+            {{ Form::hidden('latitud', 'Latitud', ['id'=>'lat', 'required' => 'required']) }}
+            {{ Form::hidden('longitud', 'Longitud', ['id'=>'long', 'required' => 'required']) }}
             {{ Form::hidden('tipo', 1, ['id'=>'tipo']) }}
         </div>
         <div id="map" class="col-lg-8 col-md-8 col-sm-8 col-xs-8" style="border:groove;margin-bottom:10px;">    
-        </div><input class="btn btn-info" type="button" value="Ubicación Actual" onclick="posicion_actual()"/>
+        </div>
+        <span id="direccion" style="color:black"></span><br>
+        <input class="btn btn-info" type="button" value="Ubicación Actual" onclick="posicion_actual()"/>
         <br>
         <br>
         <button class="btn btn-success" type="submit">Subir un Evento!</button>
@@ -42,6 +44,23 @@
             //agregarMarkersTodos();
         });
         
+        function reverse_geocoding(selec,lat,lon){
+            var latlng = new google.maps.LatLng(lat, lon);
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+                if (status !== google.maps.GeocoderStatus.OK) {
+                    alert(status);
+                }
+                // This is checking to see if the Geoeode Status is OK before proceeding
+                if (status == google.maps.GeocoderStatus.OK) {
+                    console.log(results);
+                    var address = (results[0].formatted_address);
+                    console.log(address);
+                    $(selec).text(address);
+                }
+            });
+        }
+
         function ver_mapa(){
             map = new GMaps({
                 div: '#map',
@@ -57,6 +76,8 @@
                     });
                     $('#lat').val(event.latLng.lat());
                     $('#long').val(event.latLng.lng());
+                    var select = "#direccion";
+                    reverse_geocoding(select,event.latLng.lat(),event.latLng.lng());
                 }
             });
         }
@@ -70,8 +91,10 @@
                         title: 'Evento Nuevo',
                         click: function(e) {}
                     });
-                    $('#lat').val(position.coords.latitiude);
+                    $('#lat').val(position.coords.latitude);
                     $('#long').val(position.coords.longitude);
+                    var select = "#direccion";
+                    reverse_geocoding(select,position.coords.latitude,position.coords.longitude);
                 },
                 error: function(error) {
                     alert('Geolocation failed: '+error.message);
@@ -81,7 +104,6 @@
                 }
             })
         }
-
 
     </script>
 @endsection
