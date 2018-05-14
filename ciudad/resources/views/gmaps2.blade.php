@@ -126,7 +126,7 @@
                                                     @endif
                                                 @endforeach    
                                                 </td>
-                                                <td>{{$evento->created_at}}</td>
+                                                <td>{{$evento->created_at->format('d-m-Y H:i:s')}}</td>
                                                 <td style="align:justify;">
                                                     <button id="boton-filtrar-evento-{{$evento->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id,{{$evento->latitud}},{{$evento->longitud}})" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
                                                     <button id="boton-localizar-evento-{{$evento->id}}" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" title="Localizar en el mapa" onclick="localizarAspectoMapa({{$evento->latitud}},{{$evento->longitud}})"> <img src="img/localizar.png" height="18" width="18"></button>
@@ -136,11 +136,16 @@
                                             <tr>
                                                 <td id="datos-evento-{{$evento->id}}" colspan="5" class="collapse">
                                                     <div>
-                                                        <b>Fecha de Ocurrencia:</b> {{$evento->fecha_ocurrencia}} <br>  
+                                                        <b>Fecha de Ocurrencia:</b> {{date_create($evento->fecha_ocurrencia)->format('d-m-Y H:i:s')}} <br>  
                                                         <b>Descripción:</b> {{$evento->descripcion}} <br> 
                                                         <b>Dirección: </b><span id="direccion-{{$evento->id}}"></span> <br>
-                                                        <b>Denunciante:</b> {{$evento->denunciante_id}} <br>
-                                                        <b>Fecha en que fue registrado en el Sistema:</b> {{$evento->created_at}} <br>
+                                                    @foreach($denunciantes as $denunciante)
+                                                        @if($evento->denunciante_id === $denunciante->id)
+                                                            <b>Denunciante (Tel.):</b> {{$denunciante->telefono}} <br>
+                                                            @break
+                                                        @endif
+                                                    @endforeach
+                                                        <b>Fecha en que fue registrado en el Sistema:</b> {{$evento->created_at->format('d-m-Y H:i:s')}} <br>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -156,7 +161,7 @@
                                                     @endif
                                                 @endforeach    
                                                 </td>
-                                                <td>{{$estado->created_at}}</td>
+                                                <td>{{$estado->created_at->format('d-m-Y H:i:s')}}</td>
                                                 <td style="align:justify;">
                                                     <button id="boton-filtrar-estado-{{$estado->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id,{{$estado->latitud}},{{$estado->longitud}})" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
                                                     <button id="boton-localizar-evento-{{$evento->id}}" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" title="Localizar en el mapa" onclick="localizarAspectoMapa({{$estado->latitud}},{{$estado->longitud}})"> <img src="img/localizar.png" height="18" width="18"></button>
@@ -167,11 +172,16 @@
                                             <tr>
                                                 <td id="datos-estado-{{$estado->id}}" colspan="5" class="collapse">
                                                     <div>
-                                                        <b>Fecha en que Sucedió:</b> {{$estado->fecha}} <br>  
+                                                        <b>Fecha en que Sucedió:</b> {{date_create($estado->fecha)->format('d-m-Y H:i:s')}} <br>  
                                                         <b>Descripción:</b> {{$estado->descripcion}} <br> 
                                                         <b>Dirección: </b><span id="direccion-{{$estado->id}}"></span> <br>
-                                                        <b>Denunciante:</b> {{$estado->denunciante_id}} <br>
-                                                        <b>Fecha en que fue registrado en el Sistema:</b> {{$estado->created_at}} <br>
+                                                    @foreach($denunciantes as $denunciante)
+                                                        @if($estado->denunciante_id === $denunciante->id)
+                                                            <b>Denunciante (Tel.):</b> {{$denunciante->telefono}} <br>
+                                                            @break
+                                                        @endif
+                                                    @endforeach
+                                                        <b>Fecha en que fue registrado en el Sistema:</b> {{$estado->created_at->format('d-m-Y H:i:s')}} <br>
                                                         <b>Solucionado:</b> @if($estado->solucionado === 0)
                                                                             No
                                                                      @else
@@ -291,11 +301,14 @@
                 //dada una lat y long te devuelve la direccion
                 //Peligro: La API de google te permite hacer pocas consultas por minuto, despues te bloquea por cierto tiempo
                 function reverse_geocoding(selec,lat,lon){
+                    console.log(selec);
+                    console.log(lat);
+                    console.log(lon);
                     var latlng = new google.maps.LatLng(lat, lon);
                     var geocoder = new google.maps.Geocoder();
                     geocoder.geocode({ 'latLng': latlng }, function (results, status) {
                         if (status !== google.maps.GeocoderStatus.OK) {
-                            alert(status);
+                            //alert(status);
                         }
                         // This is checking to see if the Geoeode Status is OK before proceeding
                         if (status == google.maps.GeocoderStatus.OK) {
@@ -304,9 +317,13 @@
                             console.log(address);
                             $(selec).text(address);
                         }
+                        else{
+                            console.log("Error" + status);
+                        }
                     });
                 }
 
+                
 
                 function getItemSeleccionadoCombo(){
                     var combo = $("#combo-aspectos").val();
@@ -434,6 +451,23 @@
                     }
                 }
                 
+                
+                //recibo el id de un denunciante y devuelvo su telefono y su nick.
+                function getDenunciante(id){
+                    var denunciantes = {!! json_encode($denunciantes->toArray()) !!};
+                    var resultado;
+                    for(var i=0;i<denunciantes.length;i++) {
+                        //console.log((denunciantes[i])['nombre']);
+                        if((denunciantes[i])['id']==id){
+                            resultado = {
+                                telefono : (denunciantes[i])['telefono'],
+                                nick :  'Anónimo',
+                            };
+                            return resultado;
+                        }
+                    }
+                }
+
 
                 function armarTabla(aspectos){
                     $("#body-tabla").empty();
@@ -464,6 +498,7 @@
                 function agregarEventosTabla(aspectos){
                     for(var i=0;i<aspectos.length;i++){
                         var categoria = getCategoria((aspectos[i])['categoria_id']);
+                        var denunciante = getDenunciante((aspectos[i])['denunciante_id']);
                         var fila = "";
                         if ((aspectos[i])['tipo']=="evento"){
                             fila = ` 
@@ -473,7 +508,7 @@
                                                     <img src="${categoria['icono']}" height="18" width="18">
                                                     ${categoria['nombre']}
                                                 </td>
-                                                <td>${(aspectos[i])['created_at']}</td>
+                                                <td>${new Date((aspectos[i])['created_at']).toLocaleString()}</td>
 
                                                 
                                                 <td style="align:justify;">
@@ -486,11 +521,11 @@
                                             <tr>
                                                 <td id="datos-evento-${(aspectos[i])['id']}" colspan="5" class="collapse">
                                                     <div>
-                                                    <b>Fecha de Ocurrencia:</b> ${(aspectos[i])['fecha_ocurrencia']} <br>  
+                                                    <b>Fecha de Ocurrencia:</b> ${new Date((aspectos[i])['fecha_ocurrencia']).toLocaleString()} <br>  
                                                     <b>Descripción:</b> ${(aspectos[i])['descripcion']} <br> 
                                                     <b>Dirección: </b><span id="direccion-${(aspectos[i])['id']}"></span> <br>
-                                                    <b>Denunciante:</b> ${(aspectos[i])['denunciante_id']} <br>
-                                                    <b>Fecha en que fue registrado en el Sistema:</b> ${(aspectos[i])['created_at']} <br>
+                                                    <b>Denunciante (Tel.):</b> ${denunciante['telefono']} <br>
+                                                    <b>Fecha en que fue registrado en el Sistema:</b> ${new Date((aspectos[i])['created_at']).toLocaleString()} <br>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -507,6 +542,7 @@
                 function agregarEstadosTabla(aspectos){
                     for(var i=0;i<aspectos.length;i++){
                         var categoria = getCategoria((aspectos[i])['categoria_id']);
+                        var denunciante = getDenunciante((aspectos[i])['denunciante_id']);
                         var fila = "";
                         if ((aspectos[i])['tipo']=="estadoobjeto"){
                             fila = ` 
@@ -516,7 +552,7 @@
                                                         <img src="${categoria['icono']}" height="18" width="18">
                                                         ${categoria['nombre']}
                                                     </td>
-                                                    <td>${(aspectos[i])['created_at']}</td>
+                                                    <td>${new Date((aspectos[i])['created_at']).toLocaleString()}</td>
                                                     <td style="align:justify;">
                                                         <button id="boton-filtrar-estado-${(aspectos[i])['id']}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id,${(aspectos[i])['latitud']},${(aspectos[i])['longitud']})" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
                                                         <button id="boton-localizar-evento-${(aspectos[i])['id']}" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" title="Localizar en el mapa" onclick="localizarAspectoMapa(${(aspectos[i])['latitud']},${(aspectos[i])['longitud']})"> <img src="img/localizar.png" height="18" width="18"></button>
@@ -527,11 +563,11 @@
                                                 <tr>
                                                     <td id="datos-estado-${(aspectos[i])['id']}" colspan="5" class="collapse">
                                                         <div>
-                                                            <b>Fecha en que Sucedió:</b> ${(aspectos[i])['fecha']} <br>  
+                                                            <b>Fecha en que Sucedió:</b> ${new Date((aspectos[i])['fecha']).toLocaleString()} <br>  
                                                             <b>Descripción:</b> ${(aspectos[i])['descripcion']} <br> 
                                                             <b>Dirección: </b><span id="direccion-${(aspectos[i])['id']}"></span> <br>
-                                                            <b>Denunciante:</b> ${(aspectos[i])['denunciante_id']} <br>
-                                                            <b>Fecha en que fue registrado en el Sistema:</b> ${(aspectos[i])['created_at']} <br>
+                                                            <b>Denunciante (Tel.):</b> ${denunciante['telefono']} <br>
+                                                            <b>Fecha en que fue registrado en el Sistema:</b> ${new Date((aspectos[i])['created_at']).toLocaleString()} <br>
                                                             <b>Solucionado:</b> ${(aspectos[i])['solucionado']==0 ? "No" : "Si"}
                                                         </div>
                                                     </td>
@@ -814,13 +850,22 @@
                                 };
 
                                 markers_data.push({
+                                    id : '#span-yo-1',
+                                    latitud : position.coords.latitude,
+                                    longitud : position.coords.longitude,
                                     lat : position.coords.latitude,
                                     lng : position.coords.longitude,
                                     title : "Usted está aquí",
                                     infoWindow: {
-                                    content: '<p>Usted está aquí</p>'
-                                },
-                                    icon : icon
+                                        content: `<div> 
+                                                    <b> Usted está aquí.</b>   <br> 
+                                                    <b> Dirección: </b><span id="span-yo-1"></span> <br>
+                                                </div>` 
+                                    },
+                                    icon : icon,
+                                    click: function(e) {
+                                        reverse_geocoding(this.id,this.latitud,this.longitud);
+                                    }
                                 });
                         map.addMarkers(markers_data);
                     },
@@ -859,13 +904,22 @@
                                     title : "{{$categoria->nombre}}",
                                     infoWindow: {
                                         content: `<div> 
-                                                    <b> Descripción: {{$evento->descripcion}} </b> <br> 
-                                                    Fecha de Ocurrencia: {{$evento->fecha_ocurrencia}} <br>  
-                                                    Denunciante: {{$evento->denunciante_id}} <br>
-                                                    Fecha en que fue registrado en el Sistema: {{$evento->created_at}} <br>
+                                                    <b> Descripción: </b> {{$evento->descripcion}}  <br> 
+                                                    <b> Fecha de Ocurrencia: </b> {{date_create($evento->fecha_ocurrencia)->format('d-m-Y H:i:s')}} <br>  
+                                                    <b> Dirección: </b> <span id="span-evento-{{$evento->id}}"></span> <br>
+                                                    @foreach($denunciantes as $denunciante)
+                                                        @if($evento->denunciante_id === $denunciante->id)
+                                                            <b> Denunciante (Tel.): </b> {{$denunciante->telefono}} <br>
+                                                            @break
+                                                        @endif
+                                                    @endforeach
+                                                    <b> Fecha en que fue registrado en el Sistema: </b> {{$evento->created_at->format('d-m-Y H:i:s')}} <br>
                                                 </div>`  
                                     },
-                                    icon : icon
+                                    icon : icon,
+                                    click: function(e) {
+                                        reverse_geocoding("#span-evento-{{$evento->id}}",{{$evento->latitud}},{{$evento->longitud}});
+                                    }
                                 });
                                 @break
                             @endif
@@ -900,18 +954,27 @@
                                     title : "{{$categoria->nombre}}",
                                     infoWindow: {
                                         content: `<div> 
-                                                    <b> Descripción: {{$estado->descripcion}} </b> <br> 
-                                                    Fecha en que Sucedió: {{$estado->fecha}} <br>  
-                                                    Denunciante: {{$estado->denunciante_id}} <br>
-                                                    Fecha en que fue registrado en el Sistema: {{$estado->created_at}} <br>
-                                                    Solucionado: @if($estado->solucionado === 0)
+                                                    <b> Descripción: </b>  {{$estado->descripcion}} <br> 
+                                                    <b> Fecha en que Sucedió: </b> {{date_create($estado->fecha)->format('d-m-Y H:i:s')}} <br>  
+                                                    <b> Dirección: </b> <span id="span-estado-{{$estado->id}}"></span> <br>
+                                                    @foreach($denunciantes as $denunciante)
+                                                        @if($estado->denunciante_id === $denunciante->id)
+                                                            <b> Denunciante (Tel.): </b> {{$denunciante->telefono}} <br>
+                                                            @break
+                                                        @endif
+                                                    @endforeach
+                                                    <b> Fecha en que fue registrado en el Sistema: </b> {{$estado->created_at->format('d-m-Y H:i:s')}} <br>
+                                                    <b> Solucionado: </b> @if($estado->solucionado === 0)
                                                                         No
                                                                     @else
                                                                         Si
                                                                     @endif
                                                 </div>`  
                                     },
-                                    icon : icon
+                                    icon : icon,
+                                    click: function(e) {
+                                        reverse_geocoding("#span-estado-{{$estado->id}}",{{$estado->latitud}},{{$estado->longitud}});
+                                    }
                                 });
                                 @break
                             @endif
@@ -934,13 +997,14 @@
             }
 
 
-
+            
 
             function agregarMarcadoresFiltro(aspectos){
                 map.removeMarkers();
                 var markers_data = [];
                 for(var i=0;i<aspectos.length;i++){
                         var categoria = getCategoria((aspectos[i])['categoria_id']);
+                        var denunciante = getDenunciante((aspectos[i])['denunciante_id']);
                         var icono = categoria['icono'];
                         console.log("Estoy en filtro-mapas, icon: " + categoria['icono']);
                         
@@ -953,35 +1017,49 @@
 
                         if ((aspectos[i])['tipo']=="evento"){
                             markers_data.push({
+                                    id : "#span-evento-"+(aspectos[i])['id'],
+                                    latitud : (aspectos[i])['latitud'],
+                                    longitud : (aspectos[i])['longitud'], 
                                     lat : (aspectos[i])['latitud'],
                                     lng : (aspectos[i])['longitud'],
                                     title : categoria['nombre'],
                                     infoWindow: {
                                         content: `<div> 
-                                                    <b> Descripción: ${(aspectos[i])['descripcion']} </b> <br> 
-                                                    Fecha de Ocurrencia: ${(aspectos[i])['fecha_ocurrencia']} <br>  
-                                                    Denunciante: ${(aspectos[i])['denunciante_id']} <br>
-                                                    Fecha en que fue registrado en el Sistema: ${(aspectos[i])['created_at']} <br>
+                                                    <b> Descripción:</b> ${(aspectos[i])['descripcion']}  <br> 
+                                                    <b> Fecha de Ocurrencia:</b> ${new Date((aspectos[i])['fecha_ocurrencia']).toLocaleString()} <br>  
+                                                    <b> Dirección: </b><span id="span-evento-${(aspectos[i])['id']}"></span><br>
+                                                    <b> Denunciante (Tel.):</b> ${denunciante['telefono']} <br>
+                                                    <b> Fecha en que fue registrado en el Sistema:</b> ${new Date((aspectos[i])['created_at']).toLocaleString()} <br>
                                                 </div>`  
                                     },
-                                    icon : icon
+                                    icon : icon,
+                                    click: function(e) {
+                                        reverse_geocoding(this.id,this.latitud,this.longitud);
+                                    }
                                 });
                         }
                         else{
                             markers_data.push({
+                                    id : "#span-estado-"+(aspectos[i])['id'],
+                                    latitud : (aspectos[i])['latitud'],
+                                    longitud : (aspectos[i])['longitud'], 
                                     lat : (aspectos[i])['latitud'],
                                     lng : (aspectos[i])['longitud'],
                                     title : categoria['nombre'],
                                     infoWindow: {
                                         content: `<div> 
-                                                    <b> Descripción: ${(aspectos[i])['descripcion']} </b> <br> 
-                                                    Fecha de Ocurrencia: ${(aspectos[i])['fecha_ocurrencia']} <br>  
-                                                    Denunciante: ${(aspectos[i])['denunciante_id']} <br>
-                                                    Fecha en que fue registrado en el Sistema: ${(aspectos[i])['created_at']} <br>
-                                                    Solucionado: ${(aspectos[i])['solucionado']==0 ? "No" : "Si"}
+                                                    <b> Descripción:</b> ${(aspectos[i])['descripcion']}  <br> 
+                                                    <b> Fecha de Ocurrencia:</b> ${new Date((aspectos[i])['fecha_ocurrencia']).toLocaleString()} <br> 
+                                                    <b> Dirección: </b><span id="span-estado-${(aspectos[i])['id']}"></span><br>
+                                                    <b> Denunciante (Tel.):</b> ${denunciante['telefono']} <br>
+                                                    <b> Fecha en que fue registrado en el Sistema:</b> ${new Date((aspectos[i])['created_at']).toLocaleString()} <br>
+                                                    <b> Solucionado:</b> ${(aspectos[i])['solucionado']==0 ? "No" : "Si"}
                                                 </div>`  
                                     },
-                                    icon : icon
+                                    icon : icon,
+                                    click: function(e) {
+                                        reverse_geocoding(this.id,this.latitud,this.longitud);
+                                    }
                                 });
                         }
                 }
