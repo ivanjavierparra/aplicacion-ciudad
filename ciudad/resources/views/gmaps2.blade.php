@@ -130,7 +130,9 @@
                                                 <td style="align:justify;">
                                                     <button id="boton-filtrar-evento-{{$evento->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id,{{$evento->latitud}},{{$evento->longitud}})" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
                                                     <button id="boton-localizar-evento-{{$evento->id}}" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" title="Localizar en el mapa" onclick="localizarAspectoMapa({{$evento->latitud}},{{$evento->longitud}})"> <img src="img/localizar.png" height="18" width="18"></button>
-                                                    <button id="boton-eliminar-evento-{{$evento->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento" onclick="eliminar({{$evento->id}},{{$evento->categoria_id}})"> <img src="img/eliminar.png" height="18" width="18"></button>
+                                                    @if (Auth::check())
+                                                        <button id="boton-eliminar-evento-{{$evento->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento" onclick="eliminar({{$evento->id}},{{$evento->categoria_id}})"> <img src="img/eliminar.png" height="18" width="18"></button>
+                                                    @endif
                                                 </td>
                                             </tr>
                                             <tr>
@@ -165,8 +167,10 @@
                                                 <td style="align:justify;">
                                                     <button id="boton-filtrar-estado-{{$estado->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id,{{$estado->latitud}},{{$estado->longitud}})" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
                                                     <button id="boton-localizar-evento-{{$evento->id}}" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" title="Localizar en el mapa" onclick="localizarAspectoMapa({{$estado->latitud}},{{$estado->longitud}})"> <img src="img/localizar.png" height="18" width="18"></button>
-                                                    <button id="boton-solucionar-estado-{{$estado->id}}" type="button" class="btn btn-success btn-sm" onclick="solucionar({{$estado->id}},{{$estado->categoria_id}})" data-toggle="tooltip" title="@if($estado->solucionado === 1) Ya esta solucionado @else Solucionar este elemento @endif" @if($estado->solucionado === 1) disabled @endif > <img src="img/solucionar.png" height="18" width="18"></button>
-                                                    <button id="boton-eliminar-estado-{{$estado->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento" onclick="eliminar({{$estado->id}},{{$estado->categoria_id}})"> <img src="img/eliminar.png" height="18" width="18"></button>
+                                                    @if (Auth::check())
+                                                        <button id="boton-solucionar-estado-{{$estado->id}}" type="button" class="btn btn-success btn-sm" onclick="solucionar({{$estado->id}},{{$estado->categoria_id}})" data-toggle="tooltip" title="@if($estado->solucionado === 1) Ya esta solucionado @else Solucionar este elemento @endif" @if($estado->solucionado === 1) disabled @endif > <img src="img/solucionar.png" height="18" width="18"></button>
+                                                        <button id="boton-eliminar-estado-{{$estado->id}}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento" onclick="eliminar({{$estado->id}},{{$estado->categoria_id}})"> <img src="img/eliminar.png" height="18" width="18"></button>
+                                                    @endif
                                                 </td>
                                             </tr>
                                             <tr>
@@ -514,7 +518,9 @@
                                                 <td style="align:justify;">
                                                     <button id="boton-filtrar-evento-${(aspectos[i])['id']}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id,${(aspectos[i])['latitud']},${(aspectos[i])['longitud']})" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
                                                     <button id="boton-localizar-evento-${(aspectos[i])['id']}" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" title="Localizar en el mapa" onclick="localizarAspectoMapa(${(aspectos[i])['latitud']},${(aspectos[i])['longitud']})"> <img src="img/localizar.png" height="18" width="18"></button>
-                                                    <button id="boton-eliminar-evento-${(aspectos[i])['id']}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento" onclick="eliminar(${(aspectos[i])['id']},${(aspectos[i])['categoria_id']})"> <img src="img/eliminar.png" height="18" width="18"></button>
+                                                    @if (Auth::check())
+                                                        <button id="boton-eliminar-evento-${(aspectos[i])['id']}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento" onclick="eliminar(${(aspectos[i])['id']},${(aspectos[i])['categoria_id']})"> <img src="img/eliminar.png" height="18" width="18"></button>
+                                                    @endif
                                                 </td>
                                                 
                                             </tr>
@@ -556,8 +562,10 @@
                                                     <td style="align:justify;">
                                                         <button id="boton-filtrar-estado-${(aspectos[i])['id']}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id,${(aspectos[i])['latitud']},${(aspectos[i])['longitud']})" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
                                                         <button id="boton-localizar-evento-${(aspectos[i])['id']}" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" title="Localizar en el mapa" onclick="localizarAspectoMapa(${(aspectos[i])['latitud']},${(aspectos[i])['longitud']})"> <img src="img/localizar.png" height="18" width="18"></button>
-                                                        <button id="boton-solucionar-estado-${(aspectos[i])['id']}" type="button" class="btn btn-success btn-sm" onclick="solucionar(${(aspectos[i])['id']},${(aspectos[i])['categoria_id']})" data-toggle="tooltip" title="${(aspectos[i])['solucionado']==1 ? "Ya esta solucionado" : "Solucionar este elemento"}" ${(aspectos[i])['solucionado']==1 ? 'disabled' : '' }> <img src="img/solucionar.png" height="18" width="18"></button>
-                                                        <button id="boton-eliminar-estado-${(aspectos[i])['id']}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento" onclick="eliminar(${(aspectos[i]['id'])},${(aspectos[i])['categoria_id']})"> <img src="img/eliminar.png" height="18" width="18"></button>
+                                                        @if (Auth::check())
+                                                            <button id="boton-solucionar-estado-${(aspectos[i])['id']}" type="button" class="btn btn-success btn-sm" onclick="solucionar(${(aspectos[i])['id']},${(aspectos[i])['categoria_id']})" data-toggle="tooltip" title="${(aspectos[i])['solucionado']==1 ? "Ya esta solucionado" : "Solucionar este elemento"}" ${(aspectos[i])['solucionado']==1 ? 'disabled' : '' }> <img src="img/solucionar.png" height="18" width="18"></button>
+                                                            <button id="boton-eliminar-estado-${(aspectos[i])['id']}" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Eliminar este elemento" onclick="eliminar(${(aspectos[i]['id'])},${(aspectos[i])['categoria_id']})"> <img src="img/eliminar.png" height="18" width="18"></button>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                                 <tr>
