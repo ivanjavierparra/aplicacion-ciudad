@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Aspecto;
 use App\Categoria;
+use App\Denunciante;
 use App\EstadoObjeto;
 use App\Evento;
 use Illuminate\Http\Request;
@@ -95,7 +96,9 @@ class AspectoController extends Controller
         
         $estados = EstadoObjeto::getAll();
 
-        return view('gmaps2',['categorias'=>$categorias,'eventos'=>$eventos,'estados'=>$estados]);
+        $denunciantes = Denunciante::getAll();
+
+        return view('gmaps2',['categorias'=>$categorias,'eventos'=>$eventos,'estados'=>$estados,'denunciantes'=>$denunciantes]);
     }
 
 
