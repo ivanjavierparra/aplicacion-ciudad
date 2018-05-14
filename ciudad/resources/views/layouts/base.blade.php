@@ -101,6 +101,13 @@
         <script>
             $(document).ready(function() {
                 $(".dropdown-toggle").dropdown();
+                $(".card").mouseover(function(){
+                    $(this).css("border", "3px solid rgb(63, 72, 125)");
+
+                });
+                $(".card").mouseout(function(){
+                    $(this).css("border", "1px solid rgba(0,0,0,.125)");
+                });
             });
         </script>
     </body>

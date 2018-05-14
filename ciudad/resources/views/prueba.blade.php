@@ -14,7 +14,7 @@
         <div class="row justify-content-center">
         @for ($i = 0; $i < count($categorias); $i++) 
             @if($categorias[$i]->tipo === 'evento')
-                <div id="estadio_objeto_{{$i}}" class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+                <div id="estadio_objeto_{{$i}}" class="col-lg-2 col-md-2 col-sm-6 col-xs-6 col-6">
                     <div class="card h-100">
                         <a href={{ URL("evento/crear/{$categorias[$i]->id}") }}><img class="card-img-top" src="{{$categorias[$i]->icono}}" alt=""></a>
                         <p class="card-title">
@@ -33,7 +33,7 @@
         <div class="row justify-content-center">
         @for ($i = 0; $i < count($categorias); $i++) 
             @if($categorias[$i]->tipo === 'estadoobjeto')
-                <div id="evento_{{$i}}" class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+                <div id="evento_{{$i}}" class="col-lg-2 col-md-2 col-sm-6 col-xs-6 col-6">
                     <div class="card h-100">
                         <a href={{ URL("estadoobjeto/crear/{$categorias[$i]->id}") }}><img class="card-img-top" src="{{$categorias[$i]->icono}}" alt=""></a>
                         <p class="card-title">
