@@ -79,7 +79,7 @@
                                 <!--<input type="datetime-local" name="bdaytime"> -->
                                 <input id="fecha-desde" type="date" min="2018-01-01" value="{{date("Y-m-d")}}" value="{{date("Y-m-d")}}" onkeypress="return false" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">
                                 </div>
-                            
+                                <!--var streetaddress= fecha.substr(0, fecha.indexOf('T')); -->
                                 
 
                                 <div class="filtro col-lg-4 col-md-6 col-sm-12 col-xs-12">
@@ -891,11 +891,9 @@
 
             /* Si recibe true, significa que fue invocada por el filtro, entonces muestra en el mapa solo los eventos */
             /* de lo contrario, si es false, al mapa le agrego los eventos y  no elimino ningun marker */
-            function agregarMarkersEventos(filtro_activo){
+            function agregarMarkersEventos(){
                 var markers_data = [];
-                if(filtro_activo){
-                    map.removeMarkers();
-                }
+                
                 @foreach($eventos as $evento)
                         @foreach($categorias as $categoria)
                             @if($categoria->id === $evento->categoria_id)
