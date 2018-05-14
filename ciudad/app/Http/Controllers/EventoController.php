@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Evento;
+use App\Estados;
 use App\Categoria;
 use App\Denunciante;
 use Illuminate\Http\Request;
@@ -29,7 +30,10 @@ class EventoController extends Controller
     {
         $evento = new Evento;
         $categoria = Categoria::getCategoria($id);
-        return view('eventos.evento-add', ['evento' => $evento, "categoria" => $categoria ]);
+        $categorias = Categoria::getAll();
+        $eventos = Evento::getAll();
+        $estados = EstadoObjeto::getAll();
+        return view('eventos.evento-add', ['evento' => $evento, "categoria" => $categoria, "categorias" => $categoria, "eventos" => $eventos, "estados" => $estados ]);
     }
 
     /**
