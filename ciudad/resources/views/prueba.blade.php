@@ -3,6 +3,11 @@
 
 @section('content')
     <!-- Page Heading -->
+    @if (session('status'))
+        <div class="alert alert-success">
+            {{ session('status') }}
+        </div>
+    @endif
     <div id="titulo_principal">
         <h1 class="my-4" style="text-align:center;">Aplicación para el ciudadano</h1> 
     </div>

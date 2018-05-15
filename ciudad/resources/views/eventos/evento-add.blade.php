@@ -9,7 +9,7 @@
         </div>
         <div class="form-group">
             {{ Form::label('descripcion', 'Descripción') }}
-            {{ Form::textarea('descripcion', '', ['class' => 'form-control']) }}
+            {{ Form::textarea('descripcion', '', ['class' => 'form-control','required' => 'required']) }}
         </div>
         <div class="form-group">
             {{ Form::label('fecha_ocurrencia', 'Fecha de Ocurrencia') }}

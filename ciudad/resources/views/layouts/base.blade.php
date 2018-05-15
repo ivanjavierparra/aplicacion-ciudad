@@ -96,8 +96,8 @@
         <!--<script src="http://maps.googleapis.com/"></script>-->
         <!--<script src="js/googlemapsapi.js"></script>   -->
         <!--  LEEEEME     https://developers.google.com/maps/documentation/javascript/tutorial#Loading_the_Maps_API    -->
-        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKOnjjR1g8kJjqPEPXN9LjxolFsQS9900"></script>
-        <script async defer src={{ asset("js/gmaps.js") }} onload="ver_mapa()"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKOnjjR1g8kJjqPEPXN9LjxolFsQS9900"></script>
+        <script src={{ asset("js/gmaps.js") }} onload="ver_mapa()"></script>
         <script src={{ asset("js/mapa.js")}}></script>
         <script>
             $(document).ready(function() {

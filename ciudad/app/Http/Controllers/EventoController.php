@@ -63,7 +63,7 @@ class EventoController extends Controller
         $evento->fecha_ocurrencia = $request->fecha_ocurrencia;
         $evento->tipo = $request->tipo;
         $evento->save();   
-        return redirect('/');
+        return redirect('/')->with('status', 'Aspecto cargado correctamente!');
     }
 
     /**
