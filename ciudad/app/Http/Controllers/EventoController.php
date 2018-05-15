@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Evento;
-use App\Estados;
+use App\EstadoObjeto;
 use App\Categoria;
 use App\Denunciante;
 use Illuminate\Http\Request;

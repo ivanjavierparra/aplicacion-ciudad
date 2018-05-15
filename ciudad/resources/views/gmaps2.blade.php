@@ -16,7 +16,7 @@
                     <table class="table table-bordered table-sm">
                         <thead class="thead-dark">
                             <tr>
-                                <th>Leyenda <button id="boton-filtrar" type="button" class="btn btn btn-sm float-right" onclick="localizame()"> <img src="img/localizar.png" height="18" width="18" data-toggle="tooltip" title="Me ubica en el mapa"></button></th>
+                                <th>Leyenda <button id="boton-filtrar" type="button" class="btn btn btn-sm float-right" onclick="localizame()"> <img src="img/homero.png" height="18" width="18" data-toggle="tooltip" title="Me ubica en el mapa"><b>¿Dónde estoy?</b></button></th>
                             </tr>    
                         </thead>
                         <tbody>
@@ -59,7 +59,7 @@
                                 </div>
                             </div>
                             <div class="filtro col-lg-4 col-md-10 col-sm-12 col-xs-12" >
-                                <span>Aspectos<span>
+                                <span>Aspectos<span><br>
                                 
                                 <select id="combo-aspectos" name="combo-aspectos"> 
                                     <option value="todos" selected>Todos</option>
@@ -75,22 +75,32 @@
                                 
 
                                 <div class="filtro col-lg-4 col-md-6 col-sm-12 col-xs-12">
-                                <span>Fecha Desde</span>
+                                <span>Fecha Desde</span><br>
                                 <!--<input type="datetime-local" name="bdaytime"> -->
-                                <input id="fecha-desde" type="date" min="2018-01-01" value="{{date("Y-m-d")}}" value="{{date("Y-m-d")}}" onkeypress="return false" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">
+                                <!--<input id="fecha-desde" step="1" type="datetime-local" min="2018-01-01" value="{{date("Y-m-d")}}" value="{{date("Y-m-d")}}" onkeypress="return false" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">-->
+                                <input id="fecha-desde" step="1" type="datetime-local" min="2018-01-01" value="{{date("Y-m-d")}}" value="{{date("Y-m-d")}}"  required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">
                                 </div>
                                 <!--var streetaddress= fecha.substr(0, fecha.indexOf('T')); -->
-                                
+                                <!-- var fh = fecha.split('T'); -->
 
                                 <div class="filtro col-lg-4 col-md-6 col-sm-12 col-xs-12">
-                                <span>Fecha Hasta</span>
-                                <input id="fecha-hasta" type="date" min="2018-01-01" max="{{date("Y-m-d")}}" value="{{date("Y-m-d")}}" onkeypress="return false" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">
+                                <span>Fecha Hasta</span><br>
+                                <!--<input id="fecha-hasta" step="1" type="datetime-local" min="2018-01-01" max="{{date("Y-m-d")}}" value="{{date("Y-m-d")}}" onkeypress="return false" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">-->
+                                <input id="fecha-hasta" step="1" type="datetime-local" min="2018-01-01" max="{{date("Y-m-d")}}" value="{{date("Y-m-d")}}"  required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}">
                                 </div>
                             
                     
                             </div>
                             <div class="row" style="margin-top:10px;">
-                    
+
+                                    <!-- alerts boostrap -->
+                                    <div id="alerta-filtro" class="alert alert-danger alert-dismissible fade show" role="alert" style="display:none;">
+                                            <button type="button" class="close"  onclick="$('#alerta-filtro').toggle();"> 
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <strong>Mensaje: </strong> Todos los campos son necesarios.
+                                    </div>
+
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom:5px;">
                                             <div class="panel-heading">
                                                     <div style="text-align:center;">
@@ -101,7 +111,23 @@
                             
                             </div>
                 </div>
-            
+
+                <!-- alerts boostsap -->
+                <div id="alerta-Eliminar" class="alert alert-success alert-dismissible fade show" role="alert" style="display:none;">
+                        <button type="button" class="close"  onclick="$('#alerta-Eliminar').toggle();"> 
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <strong>Mensaje: </strong> Eliminado Correctamente!.
+                </div>
+
+                <!-- alerts boostrap -->
+                <div id="alerta-Solucionar" class="alert alert-success alert-dismissible fade show" role="alert" style="display:none;">
+                        <button type="button" class="close"  onclick="$('#alerta-Solucionar').toggle();"> 
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <strong>Mensaje: </strong> Operación exitosa!.
+                </div>
+
                 <div class="row justify-content-center">
                         <div class="col-lg-12 col-md-11 col-sm-11 col-xs-11">
                             <div class="table-responsive">
@@ -264,6 +290,8 @@
             </div>
         </div>
        
+       
+       
           
       
           
@@ -348,8 +376,29 @@
                 //se deberia implementar un ajax que pida al servidor los filtros que aplicó el usuario 
                 function filtrar(){
                     var combo = $("#combo-aspectos").val();
-                    var fecha_desde = $("#fecha-desde").val();
-                    var fecha_hasta = $("#fecha-hasta").val();
+                    var fechahoradesde = $("#fecha-desde").val();
+                    var fechahorahasta = $("#fecha-hasta").val();
+
+                    if((fechahoradesde=="") || (fechahorahasta=="")){
+                        $("#alerta-filtro").show();
+                        return;
+                    }
+                    
+                    var fecha_hora_desde = fechahoradesde.split('T');
+                    var fecha_hora_hasta = fechahorahasta.split('T');
+
+                    var fecha_desde = fecha_hora_desde[0];
+                    var hora_desde = fecha_hora_desde[1];
+                    var fecha_hasta = fecha_hora_hasta[0];
+                    var hora_hasta = fecha_hora_hasta[1];
+
+                    console.log(fecha_desde);
+                    console.log(hora_desde);
+                    console.log(fecha_hasta);
+                    console.log(hora_hasta);
+                    console.log(combo);
+                   // return;
+
                     $("#body-tabla").empty();
                     filtro_activado = true;
                     
@@ -363,6 +412,8 @@
                                 nombre:combo,
                                 fechadesde:fecha_desde,
                                 fechahasta:fecha_hasta,
+                                horadesde:hora_desde,
+                                horahasta:hora_hasta,
                             },
                             dataType: "json",
                             method: "get",
@@ -413,7 +464,7 @@
                                 }
                                 else
                                 {
-                                    console.log("El ajax fallo: ");
+                                    console.log("El ajax fallo: " + result['objects']);
                                     vaciarMapa();
                                 }
                             },
@@ -651,7 +702,8 @@
                                           //  var value = result[key];
                                             //console.log(value);
                                         //}
-                                        alert("Eliminado correctamente!");
+                                        //alert("Eliminado correctamente!");
+                                        $("#alerta-Eliminar").show();
                                         var datos = result['objects'];
                                         //armarTabla(datos);
                                         //agregarMarcadoresFiltro(datos);
@@ -728,7 +780,7 @@
                                             //console.log(value);
                                         //}
                                         
-                                        
+                                        $("#alerta-Solucionar").show();
                                         var datos = result['objects'];
                                        // armarTabla(datos);
                                         //agregarMarcadoresFiltro(datos);
@@ -741,7 +793,7 @@
                                             //datos es vacio......elimino marcadores del mapa....
                                             vaciarMapa();
                                         }
-                                        alert("Solucionado correctamente!");
+                                        //alert("Solucionado correctamente!");
                                         
                                 }
                                 else
