@@ -105,9 +105,11 @@ class AspectoController extends Controller
     public function getAspectosFiltrados(Request $request){
         $fechahasta = $request->input('fechahasta');
         $fechadesde = $request->input('fechadesde');
+        $horadesde = $request->input('horadesde');
+        $horahasta = $request->input('horahasta');
         $nombre = $request->input('nombre');
         
-        $valores_aceptados = array("todos", "eventos", "estados");
+        $valores_aceptados = array("todos", "eventos", "estados","estados-solucionados","estados-no-solucionados");
         //TODO validar que tengo $nombre
         if (!in_array($nombre, $valores_aceptados)) {
             $error = [
@@ -120,14 +122,19 @@ class AspectoController extends Controller
         $tipos = [
             "todos" => Aspecto::getQuery(),
             "eventos" => Evento::getQuery(),
-            "estados" => EstadoObjeto::getQuery()
+            "estados" => EstadoObjeto::getQuery(),
+            "estados-solucionados" => EstadoObjeto::getQuerySolucionados(),
+            "estados-no-solucionados" => EstadoObjeto::getQueryNoSolucionados()
         ];
 
         $query = $tipos[$nombre];
         //mktime()
         
         $query->whereDate('aspectos.created_at', '>=',$fechadesde);
+        $query->whereTime('aspectos.created_at','>=',$horadesde);
         $query->whereDate('aspectos.created_at', '<=',$fechahasta);
+        $query->whereTime('aspectos.created_at','<=',$horahasta);
+        
         $query->select('aspectos.*');
 
         $data = [

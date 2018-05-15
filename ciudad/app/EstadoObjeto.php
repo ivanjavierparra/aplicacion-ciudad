@@ -31,6 +31,22 @@ class EstadoObjeto extends Aspecto
             ->where("categorias.tipo", "=", "estadoobjeto");
     }
 
+    public static function getQuerySolucionados(){
+        return DB::table("aspectos")
+            ->where("aspectos.solucionado","=","1")
+            ->join("categorias", "aspectos.categoria_id", "=", "categorias.id")
+            ->where("categorias.tipo", "=", "estadoobjeto");
+            
+    }
+
+    public static function getQueryNoSolucionados(){
+        return DB::table("aspectos")
+            ->where("aspectos.solucionado","=","0")
+            ->join("categorias", "aspectos.categoria_id", "=", "categorias.id")
+            ->where("categorias.tipo", "=", "estadoobjeto");
+            
+    }
+
     public static function solucionar($id){
         $estado = EstadoObjeto::find($id);
         $estado->solucionado = 1;
