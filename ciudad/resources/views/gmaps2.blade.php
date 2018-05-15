@@ -247,7 +247,7 @@
 
 
        <!-- modal eliminar -->
-       <div id="modalEliminar" class="modal" tabindex="-1" role="dialog">
+       <div id="modalEliminar" class="modal" tabindex="-1" role="dialog" style="display:none;">
             <div  class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header" style="background-color:black;color:white;font-wight:bold">
@@ -684,6 +684,7 @@
 
                 //funcion que recibe id del aspecto y hace una peticion al servidor para eliminarlo.
                 function eliminarAjax(idAspecto){
+                    $('#modalEliminar').hide();
                     $.ajax({
 
                             url: "{{ route('eliminar')}}",
@@ -731,6 +732,7 @@
                                 console.log("atenti voy a enviar un ajax. ");
                             }
                         });
+                        
                 }
                 
 
@@ -762,6 +764,7 @@
 
                 //funcion que recibe id del aspecto y hace una peticion al servidor para solucionarlo.
                 function solucionarAjax(idAspecto){
+                    $('#modalSolucionar').hide();
                     $.ajax({
                             url: "{{ route('solucionar')}}",
                             data:  {
