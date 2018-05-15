@@ -16,7 +16,7 @@
                     <table class="table table-bordered table-sm">
                         <thead class="thead-dark">
                             <tr>
-                                <th>Leyenda <button id="boton-filtrar" type="button" class="btn btn btn-sm float-right" onclick="localizame()"> <img src="img/homero.png" height="18" width="18" data-toggle="tooltip" title="Me ubica en el mapa"><b>¿Dónde estoy?</b></button></th>
+                                <th>Leyenda <button id="boton-filtrar" type="button" class="btn btn btn-sm float-right" onclick="localizame()"> <img src="img/localizar.png" height="18" width="18" data-toggle="tooltip" title="Me ubica en el mapa"><b>¿Dónde estoy?</b></button></th>
                             </tr>    
                         </thead>
                         <tbody>
