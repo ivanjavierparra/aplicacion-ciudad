@@ -33,7 +33,7 @@ class EventoController extends Controller
         $categorias = Categoria::getAll();
         $eventos = Evento::getAll();
         $estados = EstadoObjeto::getAll();
-        return view('eventos.evento-add', ['evento' => $evento, "categoria" => $categoria, "categorias" => $categoria, "eventos" => $eventos, "estados" => $estados ]);
+        return view('eventos.evento-add', ['evento' => $evento, "categoria" => $categoria, "categorias" => $categorias, "eventos" => $eventos, "estados" => $estados ]);
     }
 
     /**

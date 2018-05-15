@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\EstadoObjeto;
+use App\Estados;
 use App\Categoria;
 use App\Denunciante;
 use Illuminate\Http\Request;
@@ -29,7 +30,10 @@ class EstadoObjetoController extends Controller
     {
         $estado_objeto = new EstadoObjeto;
         $categoria = Categoria::getCategoria($id);
-        return view('estadoobjeto.estado-objeto-add', ['estado_objeto' => $estado_objeto, "categoria" => $categoria ]);
+        $categorias = Categoria::getAll();
+        $eventos = Evento::getAll();
+        $estados = EstadoObjeto::getAll();
+        return view('estadoobjeto.estado-objeto-add', ['estado_objeto' => $estado_objeto, "categoria" => $categoria, "categorias" => $categorias, "eventos" => $eventos, "estados" => $estados ]);
     }
 
     /**
