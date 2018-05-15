@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Evento;
 use App\EstadoObjeto;
 use App\Estados;
 use App\Categoria;

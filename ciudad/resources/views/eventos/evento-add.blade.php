@@ -17,7 +17,7 @@
         </div>
         <div class="form-group">
             {{ Form::label('denunciante', 'Número de Contacto') }}
-            {{ Form::text('denunciante', '', ['class' => 'form-control', 'required' => 'required']) }}
+            {{ Form::text('denunciante', '', ['class' => 'form-control','required' => 'required']) }}
         </div>
         <div class="form-group">
             {{ Form::hidden('latitud', 'Latitud', ['id'=>'lat', 'required' => 'required']) }}

@@ -13,11 +13,11 @@
         </div>
         <div class="form-group">
         {{ Form::label('denunciante', 'Número de Contacto') }}
-        {{ Form::text('denunciante', '', ['class' => 'form-control']) }}
+        {{ Form::text('denunciante', '', ['class' => 'form-control','required' => 'required']) }}
         </div>
         <div class="form-group">
-            {{ Form::hidden('latitud', 'Latitud', ['id'=>'lat']) }}
-            {{ Form::hidden('longitud', 'Longitud', ['id'=>'long']) }}
+            {{ Form::hidden('latitud', 'Latitud', ['id'=>'lat','required' => 'required']) }}
+            {{ Form::hidden('longitud', 'Longitud', ['id'=>'long','required' => 'required']) }}
             {{ Form::hidden('tipo', 2, ['id'=>'tipo']) }}
         </div>
         <span id="direccion" style="color:black"></span><br>
@@ -75,18 +75,21 @@
                     reverse_geocoding(select,event.latLng.lat(),event.latLng.lng());
                 }
             });
+            agregarMarkersTodos();
         }
         function posicion_actual(){
+            map.removeMarkers();
+            agregarMarkersTodos();
             GMaps.geolocate({
                 success: function(position) {
                     map.setCenter(position.coords.latitude, position.coords.longitude);
-                    map.addMarker({
+                    /*map.addMarker({
                         lat: position.coords.latitude,
                         lng: position.coords.longitude,
                         title: 'Evento Nuevo',
                         click: function(e) {}
-                    });
-                    $('#lat').val(position.coords.latitiude);
+                    });*/
+                    $('#lat').val(position.coords.latitude);
                     $('#long').val(position.coords.longitude);
                     var select = "#direccion";
                     reverse_geocoding(select,position.coords.latitude,position.coords.longitude);
@@ -100,6 +103,147 @@
             })
         }
 
+        /* Si recibe true, significa que fue invocada por el filtro, entonces muestra en el mapa solo los eventos */
+            /* de lo contrario, si es false, al mapa le agrego los eventos y  no elimino ningun marker */
+            function agregarMarkersEventos(){
+                var markers_data = [];
+                
+                @foreach($eventos as $evento)
+                        @foreach($categorias as $cat)
+                            @if($cat->id === $evento->categoria_id)
+                                var icon = {
+                                    url: '{{ asset("$cat->icono") }}', // url
+                                    scaledSize: new google.maps.Size(32, 32), // scaled size
+                                    origin: new google.maps.Point(0,0), // origin
+                                    anchor: new google.maps.Point(0, 0) // anchor
+                                };
 
+                                markers_data.push({
+                                    lat : '{{$evento->latitud}}',
+                                    lng :'{{$evento->longitud}}',
+                                    title : "{{$cat->nombre}}",
+                                    infoWindow: {
+                                        content: `<div> 
+                                                    <b> Descripción: </b> {{$evento->descripcion}}  <br> 
+                                                    <b> Fecha de Ocurrencia: </b> {{date_create($evento->fecha_ocurrencia)->format('d-m-Y H:i:s')}} <br>  
+                                                    <b> Dirección: </b> <span id="span-evento-{{$evento->id}}"></span> <br>
+                                                    <b> Fecha en que fue registrado en el Sistema: </b> {{$evento->created_at->format('d-m-Y H:i:s')}} <br>
+                                                </div>`  
+                                    },
+                                    icon : icon,
+                                    click: function(e) {
+                                        reverse_geocoding("#span-evento-{{$evento->id}}",{{$evento->latitud}},{{$evento->longitud}});
+                                    }
+                                });
+                                @break
+                            @endif
+                        @endforeach
+                @endforeach
+
+                map.addMarkers(markers_data);
+                
+            }
+
+
+            /* Si recibe true, significa que fue invocada por el filtro, entonces muestra en el mapa solo los estados */
+            /* de lo contrario, si es false, al mapa le agrego los estados y  no elimino ningun marker de evento */
+            function agregarMarkersEstados(){
+                var markers_data = [];
+                
+                
+                @foreach($estados as $estado)
+                
+                        @foreach($categorias as $cat)
+                            @if($cat->id === $estado->categoria_id)
+                                var icon = {
+                                    url: '{{ asset("$cat->icono") }}', // url
+                                    scaledSize: new google.maps.Size(32, 32), // scaled size
+                                    origin: new google.maps.Point(0,0), // origin
+                                    anchor: new google.maps.Point(0, 0) // anchor
+                                };
+
+                                markers_data.push({
+                                    lat : '{{$estado->latitud}}',
+                                    lng :'{{$estado->longitud}}',
+                                    title : "{{$cat->nombre}}",
+                                    infoWindow: {
+                                        content: `<div> 
+                                                    <b> Descripción: </b>  {{$estado->descripcion}} <br> 
+                                                    <b> Fecha en que Sucedió: </b> {{date_create($estado->fecha)->format('d-m-Y H:i:s')}} <br>  
+                                                    <b> Dirección: </b> <span id="span-estado-{{$estado->id}}"></span> <br>
+                                                    <b> Fecha en que fue registrado en el Sistema: </b> {{$estado->created_at->format('d-m-Y H:i:s')}} <br>
+                                                    <b> Solucionado: </b> @if($estado->solucionado === 0)
+                                                                        No
+                                                                    @else
+                                                                        Si
+                                                                    @endif
+                                                </div>`  
+                                    },
+                                    icon : icon,
+                                    click: function(e) {
+                                        reverse_geocoding("#span-estado-{{$estado->id}}",{{$estado->latitud}},{{$estado->longitud}});
+                                    }
+                                });
+                                @break
+                            @endif
+                        @endforeach
+
+                @endforeach
+
+                map.addMarkers(markers_data);
+                
+            }
+
+
+            function agregarMarkersUbicacionActual(){
+                GMaps.geolocate({
+                    success: function(position) {
+                        var markers_data = [];
+                        var icon = {
+                                    url: '{{ asset("img/homero.png") }}', // url
+                                    scaledSize: new google.maps.Size(32, 32), // scaled size
+                                    origin: new google.maps.Point(0,0), // origin
+                                    anchor: new google.maps.Point(0, 0) // anchor
+                                };
+
+                                markers_data.push({
+                                    id : '#span-yo-1',
+                                    latitud : position.coords.latitude,
+                                    longitud : position.coords.longitude,
+                                    lat : position.coords.latitude,
+                                    lng : position.coords.longitude,
+                                    title : "Usted está aquí",
+                                    infoWindow: {
+                                        content: `<div> 
+                                                    <b> Usted está aquí.</b>   <br> 
+                                                    <b> Dirección: </b><span id="span-yo-1"></span> <br>
+                                                </div>` 
+                                    },
+                                    icon : icon,
+                                    click: function(e) {
+                                        reverse_geocoding(this.id,this.latitud,this.longitud);
+                                    }
+                                });
+                        map.addMarkers(markers_data);
+                    },
+                    error: function(error) {
+                        alert('Geolocation failed: '+error.message);
+                    },
+                    not_supported: function() {
+                        alert("Your browser does not support geolocation");
+                    },
+                    always: function() {
+                       // alert("Done!");
+                    }
+                });
+            }
+
+
+            function agregarMarkersTodos(){
+                    //map.removeMarkers();
+                    agregarMarkersEventos();
+                    agregarMarkersEstados();
+                    agregarMarkersUbicacionActual();
+            }
     </script>
 @endsection
