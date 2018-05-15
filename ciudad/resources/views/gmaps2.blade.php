@@ -227,18 +227,6 @@
                             </div>
                         </div>
                 </div>
-            
-                <div class="panel-footer">
-                    <div class="row float-right" >
-                        <ul class="pagination" >
-                            <li class="page-item"><a class="page-link" href="#" style="background-color:black;color:white">Previous</a></li>
-                            <li class="page-item"><a class="page-link" href="#" style="background-color:black;color:white">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#" style="background-color:black;color:white">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#" style="background-color:black;color:white">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#" style="background-color:black;color:white">Next</a></li>
-                        </ul>
-                    </div>
-                </div>
             </div>
       </div>
         
@@ -267,8 +255,6 @@
             </div>
         </div>
 
-        
-
         <!-- modal solucionar -->
        <div id="modalSolucionar" class="modal" tabindex="-1" role="dialog">
             <div  class="modal-dialog" role="document">
@@ -290,18 +276,6 @@
             </div>
         </div>
        
-       
-       
-          
-      
-          
-         
-
-               
-           
-
-        
-
         <script>
                 var filtro_activado = false;
 

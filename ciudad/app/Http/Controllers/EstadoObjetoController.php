@@ -63,7 +63,7 @@ class EstadoObjetoController extends Controller
         $estado_objeto->tipo = $request->tipo;
 
         $estado_objeto->save();
-        return redirect('/');
+        return redirect('/')->with('status', 'Aspecto cargado correctamente!');
     }
 
     /**
