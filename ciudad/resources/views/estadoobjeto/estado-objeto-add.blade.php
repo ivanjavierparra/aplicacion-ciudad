@@ -20,9 +20,10 @@
             {{ Form::hidden('longitud', 'Longitud', ['id'=>'long','required' => 'required']) }}
             {{ Form::hidden('tipo', 2, ['id'=>'tipo']) }}
         </div>
+        <div id="map" class="col-lg-8 col-md-8 col-sm-8 col-xs-8" style="border:groove;margin-bottom:10px;"> 
+        </div>
         <span id="direccion" style="color:black"></span><br>
-        <div id="map" class="col-lg-8 col-md-8 col-sm-8 col-xs-8" style="border:groove;margin-bottom:10px;">    
-        </div><input class="btn btn-info" type="button" value="Ubicación Actual" onclick="posicion_actual()"/>
+        <input class="btn btn-info" type="button" value="Ubicación Actual" onclick="posicion_actual()"/>
         <br>
         <br>
         <button class="btn btn-success" type="submit">Subir un Estado de un Objeto!</button>
@@ -62,7 +63,8 @@
                 lat: -43.253203,
                 lng: -65.309628,
                 click: function(event) {
-                    map.removeMarkers()
+                    map.removeMarkers();
+                    agregarMarkersTodos();
                     map.addMarker({
                         lat: event.latLng.lat(),
                         lng: event.latLng.lng(),

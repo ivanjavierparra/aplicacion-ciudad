@@ -65,8 +65,6 @@
                                     <option value="todos" selected>Todos</option>
                                     <option value="eventos">Eventos</option>
                                     <option value="estados">Estado de Objetos</option>
-                                    <option value="eventos-expirados">Eventos Expirados</option>
-                                    <option value="eventos-no-expirados">Eventos No Expirados</option>
                                     <option value="estados-solucionados">Estados de Objetos Solucionados</option>
                                     <option value="estados-no-solucionados">Estados de Objetos No Solucionados</option>
                                 </select>
