@@ -46,7 +46,7 @@ class EventoController extends Controller
     {
         $evento = new Evento;
 
-        $evento->fecha = date("Y-m-d H:i:s");
+        $evento->fecha = date("Y-m-d H:i:s"); /* esto no iria.....esto tendria que estar en estados....*/
         $evento->descripcion = $request->descripcion;
         $evento->latitud = $request->latitud;
         $evento->longitud = $request->longitud;

@@ -13,7 +13,7 @@
         </div>
         <div class="form-group">
             {{ Form::label('fecha_ocurrencia', 'Fecha de Ocurrencia') }}
-            <input type="datetime-local" name="fecha_ocurrencia" class='form-control' value="2018-06-01T08:30">
+            <input id="fecha" type="datetime-local" name="fecha_ocurrencia" class='form-control'  min="2018-05-01T00:00">
         </div>
         <div class="form-group">
             {{ Form::label('denunciante', 'Número de Contacto') }}
@@ -37,6 +37,7 @@
     <script src={{ asset("js/jquery-3.3.1.min.js") }}></script>
     
     <script>
+        obtenerFechaHsActual();
         var map;
         var markers;
         $(function() {
@@ -253,5 +254,36 @@
                     agregarMarkersEstados();
                     agregarMarkersUbicacionActual();
             }
+
+            function obtenerFechaHsActual(){
+                var date = new Date();
+                //var str = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + "T" +  date.getHours() + ":" + date.getMinutes();
+                var str = date.getFullYear();
+                var mes = date.getMonth() + 1;
+                if(mes<10){
+                    str = str + "-0" + mes;
+                }else{
+                    str = str + "-" + date.getMonth()+1;
+                }
+                if(date.getDate()<10){
+                    str = str + "-0" + date.getDate() + "T";
+                }else{
+                    str = str + "-" + date.getDate() + "T";
+                }
+                
+                if(date.getHours()<10){
+                    str = str + "0" + date.getHours();
+                }else{
+                    str = str + date.getHours();
+                }
+
+                if(date.getMinutes()<10){
+                    str = str + "0" + date.getMinutes();
+                }else{
+                    str = str + ":" + date.getMinutes();
+                }
+                $("#fecha").attr("max",str);
+            }
+
     </script>
 @endsection
