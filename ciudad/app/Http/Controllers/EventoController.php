@@ -45,6 +45,7 @@ class EventoController extends Controller
      */
     public function store(Request $request)
     {
+        date_default_timezone_set('America/Argentina/Buenos_Aires');
         $evento = new Evento;
         try{
             $evento->fecha = date("Y-m-d H:i:s"); /* esto no iria.....esto tendria que estar en estados....*/

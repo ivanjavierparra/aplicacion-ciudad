@@ -18,7 +18,7 @@
         </div>
         <div class="form-group">
             {{ Form::label('fecha_ocurrencia', 'Fecha de Ocurrencia') }}
-            <input id="fecha" type="datetime-local" name="fecha_ocurrencia" class='form-control'  min="2018-05-01T00:00">
+            <input id="fecha" type="datetime-local" name="fecha_ocurrencia" class='form-control'  min="2018-05-01T00:00" required>
         </div>
         <div class="form-group">
             {{ Form::label('denunciante', 'Número de Contacto') }}

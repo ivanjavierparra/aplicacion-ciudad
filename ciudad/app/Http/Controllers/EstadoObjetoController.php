@@ -46,6 +46,7 @@ class EstadoObjetoController extends Controller
      */
     public function store(Request $request)
     {
+        date_default_timezone_set('America/Argentina/Buenos_Aires');
         $estado_objeto = new EstadoObjeto;
         try{
             $estado_objeto->fecha = date("Y-m-d H:i:s");
@@ -62,6 +63,7 @@ class EstadoObjetoController extends Controller
                 $estado_objeto->denunciante_id = $nuevo_denunciante->id;
             }
             $estado_objeto->tipo = $request->tipo;
+            $estado_objeto->solucionado = 0;
 
             $estado_objeto->save();
             return redirect('/')->with('status', 'Aspecto cargado correctamente!');
