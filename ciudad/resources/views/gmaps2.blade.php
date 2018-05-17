@@ -150,7 +150,7 @@
                                                     @endif
                                                 @endforeach    
                                                 </td>
-                                                <td>{{$evento->created_at->format('d-m-Y H:i:s')}}</td>
+                                                <td>{{$evento->created_at->format('d/m/Y H:i:s')}}</td>
                                                 <td style="align:justify;">
                                                     <button id="boton-filtrar-evento-{{$evento->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id,{{$evento->latitud}},{{$evento->longitud}})" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
                                                     <button id="boton-localizar-evento-{{$evento->id}}" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" title="Localizar en el mapa" onclick="localizarAspectoMapa({{$evento->latitud}},{{$evento->longitud}})"> <img src="img/localizar.png" height="18" width="18"></button>
@@ -162,7 +162,7 @@
                                             <tr>
                                                 <td id="datos-evento-{{$evento->id}}" colspan="5" class="collapse">
                                                     <div>
-                                                        <b>Fecha de Ocurrencia:</b> {{date_create($evento->fecha_ocurrencia)->format('d-m-Y H:i:s')}} <br>  
+                                                        <b>Fecha de Ocurrencia:</b> {{date_create($evento->fecha_ocurrencia)->format('d/m/Y H:i:s')}} <br>  
                                                         <b>Descripción:</b> {{$evento->descripcion}} <br> 
                                                         <b>Dirección: </b><span id="direccion-{{$evento->id}}"></span> <br>
                                                     @foreach($denunciantes as $denunciante)
@@ -171,7 +171,7 @@
                                                             @break
                                                         @endif
                                                     @endforeach
-                                                        <b>Fecha en que fue registrado en el Sistema:</b> {{$evento->created_at->format('d-m-Y H:i:s')}} <br>
+                                                        <b>Fecha en que fue registrado en el Sistema:</b> {{$evento->created_at->format('d/m/Y H:i:s')}} <br>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -187,7 +187,7 @@
                                                     @endif
                                                 @endforeach    
                                                 </td>
-                                                <td>{{$estado->created_at->format('d-m-Y H:i:s')}}</td>
+                                                <td>{{$estado->created_at->format('d/m/Y H:i:s')}}</td>
                                                 <td style="align:justify;">
                                                     <button id="boton-filtrar-estado-{{$estado->id}}" type="button" class="btn btn-warning btn-sm" onclick="mostrarInfo(this.id,{{$estado->latitud}},{{$estado->longitud}})" data-toggle="tooltip" title="Mostrar más información"> <img src="img/info.png" height="18" width="18"></button>
                                                     <button id="boton-localizar-evento-{{$evento->id}}" type="button" class="btn btn-info btn-sm" data-toggle="tooltip" title="Localizar en el mapa" onclick="localizarAspectoMapa({{$estado->latitud}},{{$estado->longitud}})"> <img src="img/localizar.png" height="18" width="18"></button>
@@ -200,7 +200,7 @@
                                             <tr>
                                                 <td id="datos-estado-{{$estado->id}}" colspan="5" class="collapse">
                                                     <div>
-                                                        <b>Fecha en que Sucedió:</b> {{date_create($estado->fecha)->format('d-m-Y H:i:s')}} <br>  
+                                                        <b>Fecha en que Sucedió:</b> {{date_create($estado->fecha)->format('d/m/Y H:i:s')}} <br>  
                                                         <b>Descripción:</b> {{$estado->descripcion}} <br> 
                                                         <b>Dirección: </b><span id="direccion-{{$estado->id}}"></span> <br>
                                                     @foreach($denunciantes as $denunciante)
@@ -209,7 +209,7 @@
                                                             @break
                                                         @endif
                                                     @endforeach
-                                                        <b>Fecha en que fue registrado en el Sistema:</b> {{$estado->created_at->format('d-m-Y H:i:s')}} <br>
+                                                        <b>Fecha en que fue registrado en el Sistema:</b> {{$estado->created_at->format('d/m/Y H:i:s')}} <br>
                                                         <b>Solucionado:</b> @if($estado->solucionado === 0)
                                                                             No
                                                                      @else
