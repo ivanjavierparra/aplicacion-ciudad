@@ -9,6 +9,7 @@ use App\Categoria;
 use App\Denunciante;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 
 class EstadoObjetoController extends Controller
 {
@@ -46,24 +47,27 @@ class EstadoObjetoController extends Controller
     public function store(Request $request)
     {
         $estado_objeto = new EstadoObjeto;
-
-        $estado_objeto->fecha = date("Y-m-d H:i:s");
-        $estado_objeto->descripcion = $request->descripcion;
-        $estado_objeto->latitud = $request->latitud;
-        $estado_objeto->longitud = $request->longitud;
-        $estado_objeto->categoria_id = Categoria::where('nombre',$request->categoria)->first()->id;
         try{
-            $estado_objeto->denunciante_id = Denunciante::where('telefono',$request->denunciante)->firstOrFail()->id;
-        }catch (ModelNotFoundException $e){
-            $nuevo_denunciante = new Denunciante;
-            $nuevo_denunciante->telefono = $request->denunciante;
-            $nuevo_denunciante->save();
-            $estado_objeto->denunciante_id = $nuevo_denunciante->id;
-        }
-        $estado_objeto->tipo = $request->tipo;
+            $estado_objeto->fecha = date("Y-m-d H:i:s");
+            $estado_objeto->descripcion = $request->descripcion;
+            $estado_objeto->latitud = $request->latitud;
+            $estado_objeto->longitud = $request->longitud;
+            $estado_objeto->categoria_id = Categoria::where('nombre',$request->categoria)->first()->id;
+            try{
+                $estado_objeto->denunciante_id = Denunciante::where('telefono',$request->denunciante)->firstOrFail()->id;
+            }catch (ModelNotFoundException $e){
+                $nuevo_denunciante = new Denunciante;
+                $nuevo_denunciante->telefono = $request->denunciante;
+                $nuevo_denunciante->save();
+                $estado_objeto->denunciante_id = $nuevo_denunciante->id;
+            }
+            $estado_objeto->tipo = $request->tipo;
 
-        $estado_objeto->save();
-        return redirect('/')->with('status', 'Aspecto cargado correctamente!');
+            $estado_objeto->save();
+            return redirect('/')->with('status', 'Aspecto cargado correctamente!');
+        }catch(QueryException $e){
+            return redirect("/estadoobjeto/crear/{$estado_objeto->categoria_id}")->with('status', 'Debe seleccionar una opción en el mapa o la ubicación actual!');    
+        }
     }
 
     /**

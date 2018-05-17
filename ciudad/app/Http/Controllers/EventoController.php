@@ -8,6 +8,7 @@ use App\Categoria;
 use App\Denunciante;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 
 class EventoController extends Controller
 {
@@ -45,25 +46,28 @@ class EventoController extends Controller
     public function store(Request $request)
     {
         $evento = new Evento;
-
-        $evento->fecha = date("Y-m-d H:i:s"); /* esto no iria.....esto tendria que estar en estados....*/
-        $evento->descripcion = $request->descripcion;
-        $evento->latitud = $request->latitud;
-        $evento->longitud = $request->longitud;
-        $evento->categoria_id = Categoria::where('nombre',$request->categoria)->first()->id;
         try{
-            $evento->denunciante_id = Denunciante::where('telefono',$request->denunciante)->firstOrFail()->id;
-        }catch (ModelNotFoundException $e){
-            $nuevo_denunciante = new Denunciante;
-            $nuevo_denunciante->telefono = $request->denunciante;
-            $nuevo_denunciante->save();
-            $evento->denunciante_id = $nuevo_denunciante->id;
+            $evento->fecha = date("Y-m-d H:i:s"); /* esto no iria.....esto tendria que estar en estados....*/
+            $evento->descripcion = $request->descripcion;
+            $evento->categoria_id = Categoria::where('nombre',$request->categoria)->first()->id;
+            $evento->latitud = $request->latitud;
+            $evento->longitud = $request->longitud;
+            try{
+                $evento->denunciante_id = Denunciante::where('telefono',$request->denunciante)->firstOrFail()->id;
+            }catch (ModelNotFoundException $e){
+                $nuevo_denunciante = new Denunciante;
+                $nuevo_denunciante->telefono = $request->denunciante;
+                $nuevo_denunciante->save();
+                $evento->denunciante_id = $nuevo_denunciante->id;
+            }
+            
+            $evento->fecha_ocurrencia = $request->fecha_ocurrencia;
+            $evento->tipo = $request->tipo;
+            $evento->save();   
+            return redirect('/')->with('status', 'Aspecto cargado correctamente!');
+        }catch(QueryException $e){
+            return redirect("/evento/crear/{$evento->categoria_id}")->with('status', 'Debe seleccionar una opción en el mapa o la ubicación actual!');    
         }
-        
-        $evento->fecha_ocurrencia = $request->fecha_ocurrencia;
-        $evento->tipo = $request->tipo;
-        $evento->save();   
-        return redirect('/')->with('status', 'Aspecto cargado correctamente!');
     }
 
     /**

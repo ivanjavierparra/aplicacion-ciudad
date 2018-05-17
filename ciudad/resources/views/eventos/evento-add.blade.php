@@ -1,6 +1,11 @@
 @extends('layouts.base')
 
 @section('content')
+    @if (session('status'))
+        <div class="alert alert-danger">
+            {{ session('status') }}
+        </div>
+    @endif
     <div id="formulario-evento">
     {{ Form::model($evento, ['action' => 'EventoController@store']) }}
         <div class="form-group">
