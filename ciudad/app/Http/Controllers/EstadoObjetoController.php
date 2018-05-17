@@ -50,6 +50,7 @@ class EstadoObjetoController extends Controller
         $estado_objeto = new EstadoObjeto;
         try{
             $estado_objeto->fecha = date("Y-m-d H:i:s");
+            $estado_objeto->created_at = date("Y-m-d H:i:s");
             $estado_objeto->descripcion = $request->descripcion;
             $estado_objeto->latitud = $request->latitud;
             $estado_objeto->longitud = $request->longitud;

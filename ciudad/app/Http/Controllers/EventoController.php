@@ -49,6 +49,7 @@ class EventoController extends Controller
         $evento = new Evento;
         try{
             $evento->fecha = date("Y-m-d H:i:s"); /* esto no iria.....esto tendria que estar en estados....*/
+            $evento->created_at = date("Y-m-d H:i:s");
             $evento->descripcion = $request->descripcion;
             $evento->categoria_id = Categoria::where('nombre',$request->categoria)->first()->id;
             $evento->latitud = $request->latitud;
