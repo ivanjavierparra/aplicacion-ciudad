@@ -15,7 +15,18 @@ class Aspecto extends Model
     }
 
     public static function eliminar($id){
-        Aspecto::find($id)->delete();
+       //try{
+         //   Aspecto::find($id)->delete();
+       //} catch(\Exception $e){
+
+       //}
+
+
+       if (Aspecto::where('id', '=', $id)->exists()) {
+            // aspecto found
+            Aspecto::find($id)->delete();
+        }
+
     }
 
 }

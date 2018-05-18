@@ -157,8 +157,12 @@ class AspectoController extends Controller
     }
 
     public function eliminar(Request $request){
+       //try{
+            Aspecto::eliminar($request->input('id'));
+       ///}catch(\Exception $e) {
+
+       //}
         
-        Aspecto::eliminar($request->input('id'));
 
         $data = [
             'result' => "ok",
