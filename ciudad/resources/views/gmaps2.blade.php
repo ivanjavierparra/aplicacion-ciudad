@@ -398,7 +398,7 @@
                                             //var value = result[key];
                                             //console.log(value);
                                        // }
-                                        
+                                       
                                         var datos = result['objects'];
                                         //si datos no es vacio entonces proceso....
                                         if (typeof datos !== 'undefined' && datos.length > 0) {
@@ -687,9 +687,9 @@
                                         }
                                         else{
                                             //datos es vacio......elimino marcadores del mapa....
+                                            $("#body-tabla").empty();
                                             vaciarMapa();
                                         }
-                                       
                                 }
                                 else
                                 {

@@ -22,7 +22,13 @@ class EstadoObjeto extends Aspecto
             }
         } 
         
-        return $resultado;
+        if(empty($resultado)){
+            return [];
+        }else{
+            return $resultado;
+        }
+
+        
     }
 
     public static function getQuery() {

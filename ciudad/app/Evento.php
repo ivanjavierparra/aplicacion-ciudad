@@ -22,6 +22,12 @@ class Evento extends Aspecto
             }
         } 
         
+        if(empty($resultado)){
+            return [];
+        }else{
+            return $resultado;
+        }
+
         return $resultado;
     }
 
