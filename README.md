@@ -14,7 +14,7 @@ En la rama master se encuentra la versión 1.0 que posee las siguientes caracter
 - Registrar/Consultar/Eliminar eventos o estados de un objeto en una ciudad.
 - Solucionar estados de objetos de una ciudad.
 - Listar todos los aspectos registrados.
-- Filtra aspectos por tipo, fecha desde y fechas hasta.
+- Filtra aspectos por tipo, fecha desde y fecha hasta.
 - Iniciar Sesión. El administrador tendrá permisos para solucionar estados de objetos o eliminar aspectos.
 
 Integrantes del grupo:
